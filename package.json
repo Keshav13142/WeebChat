@@ -1,10 +1,11 @@
 {
   "name": "weeb_chat",
   "version": "1.0.0",
-  "description": "",
+  "description": "Chat apllication (Building it to imporove my skills)",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "server": "nodemon backend/server.js",
+    "react": "yarn --cwd frontend start"
   },
   "keywords": [],
   "author": "Keshav S",
