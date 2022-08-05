@@ -4,8 +4,8 @@
   "description": "Chat apllication (Building it to imporove my skills)",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon backend/server.js",
-    "react": "yarn --cwd frontend start"
+    "start": "nodemon backend/server.js",
+    "react": "npm start --prefix frontend"
   },
   "keywords": [],
   "author": "Keshav S",
