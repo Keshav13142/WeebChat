@@ -23,7 +23,7 @@ export const signUpInputs = [
     placeholder: "Confirm your password",
     type: "password",
   },
-  { label: "Profile picture", type: "file" },
+  // { label: "Profile picture", type: "file" },
 ];
 
 export const loginInputs = [
