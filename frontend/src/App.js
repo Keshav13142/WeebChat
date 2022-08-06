@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import Chats from "./components/Chats";
-import Home from "./components/Home";
+import Chats from "./pages/Chats";
+import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 
 function App() {

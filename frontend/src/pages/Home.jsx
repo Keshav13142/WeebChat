@@ -9,27 +9,29 @@ import {
   Tabs,
   useColorMode,
 } from "@chakra-ui/react";
-import SignUp from "./SignUp";
+import SignUp from "../components/SignUp";
+import Login from "../components/Login";
 
 const Home = () => {
   // eslint-disable-next-line
   const { colorMode, _ } = useColorMode();
   return (
     <Container
-      backgroundColor={colorMode === "dark" ? "#011627" : "#e5e5e5"}
-      margin={[2, 4, 6, 8]}
-      maxW={["sm", "md", "xl"]}
+      margin={[2, 4]}
+      maxW={["sm", "md"]}
       p={[2, 4]}
       borderRadius="10px"
     >
       <Box borderRadius="10px" padding="0.7rem" fontSize="3rem">
-        <Tabs variant="soft-rounded">
+        <Tabs>
           <TabList>
             <Tab width="50%">Login</Tab>
             <Tab width="50%">SignUp</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>Login</TabPanel>
+            <TabPanel>
+              <Login />
+            </TabPanel>
             <TabPanel>
               <SignUp />
             </TabPanel>
