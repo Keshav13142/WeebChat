@@ -18,12 +18,16 @@ const chatSchema = mongoose.Schema(
         ref: "User",
       },
     ],
+    groupAdmin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     latestMessage: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
     },
   },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
 const Chat = mongoose.model("Chat", chatSchema);
