@@ -55,4 +55,17 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser };
+const searchUsers = asyncHandler(async (req, res) => {
+  const { search } = req.query;
+  if (search) {
+    const users = await User.find({
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+      ],
+    }).find({ _id: { $ne: req.user._id } });
+    res.json(users);
+  } else res.json([]);
+});
+
+module.exports = { registerUser, loginUser, searchUsers };

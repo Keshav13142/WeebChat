@@ -2,12 +2,14 @@ import { Button, useToast, VStack, Text, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
 import CustomInput from "./Input";
 import { signUpInputs } from "../utils/inputFeilds";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const toast = useToast();
 
-  const [loading, setloading] = useState(false);
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const showToast = (title, status, desc = "") => {
     toast({
@@ -32,7 +34,7 @@ const SignUp = () => {
   };
 
   const getBase64 = (e) => {
-    setloading(true);
+    setLoading(true);
     const file = e.target.files[0];
     if (Math.round(file.size / 1000) > 5000) {
       showToast("File size must be less than 5mb", "warning");
@@ -43,7 +45,7 @@ const SignUp = () => {
     reader.onload = () => {
       setuser((prev) => ({ ...prev, pic: reader.result }));
     };
-    setloading(false);
+    setLoading(false);
   };
 
   const signUp = async () => {
@@ -58,19 +60,36 @@ const SignUp = () => {
       showToast("Please enter all the required details!!", "warning");
       return;
     }
-    setloading(true);
-    const data = await axios.post("/api/user/register", user);
-    setloading(false);
-    if (data.status === 200) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (!regex.test(user.email)) {
+      showToast("Please enter a valid email!!", "warning");
+      return;
+    }
+    setLoading(true);
+    const headers = {
+      "Content-type": "application/json",
+    };
+    const data = await fetch("/api/user/register", {
+      method: "post",
+      body: JSON.stringify(user),
+      headers: new Headers(headers),
+    });
+
+    const response = await data.json();
+
+    setLoading(false);
+
+    if (data.ok) {
+      console.log(response);
       showToast(
         "Account created successfully",
         "success",
         "You're ready to chat now!!"
       );
-      console.log(data.data);
+      navigate("/chats");
+      return;
     } else {
-      console.log(data.data);
-      showToast("Failed to create account", "error", "Please check !!");
+      showToast(response.error, "error");
     }
   };
 

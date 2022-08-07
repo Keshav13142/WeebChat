@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import CustomInput from "./Input";
 import { loginInputs } from "../utils/inputFeilds";
 import { Button, useToast, VStack } from "@chakra-ui/react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const toast = useToast();
+
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const showToast = (title, status, desc = "") => {
     toast({
@@ -35,11 +39,36 @@ const Login = () => {
       );
       return;
     }
-    const data = await axios.post("/api/user/login", user);
-    if (data.status === 200) {
-      console.log(data.data);
-      showToast("Login successful", "success", "Happy to see you!!");
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+    if (!regex.test(user.email)) {
+      showToast("Please enter a valid email!!", "warning");
       return;
+    }
+    setLoading(true);
+
+    const headers = {
+      "Content-type": "application/json",
+    };
+
+    const data = await fetch("/api/user/login", {
+      method: "post",
+      body: JSON.stringify(user),
+      headers: new Headers(headers),
+    });
+
+    const response = await data.json();
+
+    setLoading(false);
+
+    if (data.ok) {
+      console.log(response);
+      showToast("Login successful", "success", "Happy to see you!!");
+      navigate("/chats");
+      return;
+    } else {
+      showToast(response.error, "error");
     }
   };
 
@@ -55,7 +84,13 @@ const Login = () => {
           />
         );
       })}
-      <Button width="full" colorScheme={"blue"} stype="submit" onClick={login}>
+      <Button
+        isLoading={loading}
+        width="full"
+        colorScheme={"blue"}
+        stype="submit"
+        onClick={login}
+      >
         Login
       </Button>
       <Button
