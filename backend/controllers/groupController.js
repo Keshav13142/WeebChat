@@ -47,12 +47,15 @@ const leaveGroup = asyncHandler(async (req, res) => {
 
 const addUserToGroup = asyncHandler(async (req, res) => {
   const { chatId, user } = req.body;
-  const chat = await Chat.findByIdAndUpdate(chatId, {
+  var chat = await Chat.findByIdAndUpdate(chatId, {
     $addToSet: { users: user },
-  })
+  });
+
+  chat = await Chat.findById(chatId)
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
     .populate("latestMessage");
+
   if (chat) res.json(chat);
   else throw new Error("Chat not found!!!");
 });
