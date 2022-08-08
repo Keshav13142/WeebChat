@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import SearchModal from "../components/SearchModal";
+import SearchModal from "../components/modals/SearchModal";
 import { ChatContex } from "../Context/chatProvider";
-import { users } from "../utils/mockUsers";
 
 const Chats = () => {
   const navigate = useNavigate();
 
-  const { user, setUser } = useContext(ChatContex);
+  const { user } = useContext(ChatContex);
 
   useEffect(() => {
     if (!user) {
@@ -16,9 +15,14 @@ const Chats = () => {
     //eslint-disable-next-line
   }, []);
 
+  const createChat = (e) => {
+    const user_id = e.currentTarget.name;
+    console.log(user_id);
+  };
+
   return (
     <>
-      <SearchModal users={users} />
+      <SearchModal createChat={createChat} />
     </>
   );
 };

@@ -4,21 +4,22 @@ import React from "react";
 const ProfileCards = ({ user, createChat }) => {
   return (
     <Button
-      value={user}
+      minW={["280px"]}
       variant="ghost"
-      //   colorScheme="green"
-      name={user.name}
+      name={user._id}
       cursor={"pointer"}
       onClick={createChat}
-      display="flex"
       p={7}
-      gap={4}
-      justifyContent="start"
     >
-      <Avatar src={user.pic} />
+      <div style={{ width: "40%", position: "absolute", left: "4px" }}>
+        <Avatar src={user.pic} />
+      </div>
       <div
         style={{
+          width: "60%",
           display: "flex",
+          position: "relative",
+          left: "25px",
           flexDirection: "column",
           alignItems: "start",
           color: "white",

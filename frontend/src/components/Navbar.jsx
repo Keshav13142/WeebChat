@@ -5,6 +5,7 @@ import {
   Heading,
   Icon,
   IconButton,
+  Image,
   Menu,
   MenuButton,
   MenuList,
@@ -14,31 +15,33 @@ import React, { useContext } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CgLogOut, CgProfile, CgSearch } from "react-icons/cg";
 import { GoMarkGithub } from "react-icons/go";
+import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { ChatContex } from "../Context/chatProvider";
 
 const Navbar = () => {
-  const { user, setUser, setOpen } = useContext(ChatContex);
+  const { user, setUser, setSearchOpen } = useContext(ChatContex);
 
   const navigate = useNavigate();
+
   const logout = async () => {
-    const data = await fetch("/api/user/logout", {
+    localStorage.clear();
+
+    setUser(null);
+
+    navigate("/");
+
+    await fetch("/api/user/logout", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + user.token,
       },
     });
-
-    if (data.ok) setUser(null);
-
-    localStorage.clear();
-
-    navigate("/");
   };
 
   const toggleOpen = () => {
-    setOpen(true);
+    setSearchOpen(true);
   };
 
   return (
@@ -50,7 +53,17 @@ const Navbar = () => {
       alignItems="center"
       p={2}
     >
-      <Heading fontSize={[20, 22, 26]}>WeebChat</Heading>
+      <div
+        style={{
+          display: "flex",
+          gap: "7px",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Heading fontSize={[20, 22, 26]}>WeebChat</Heading>
+        <Image mt={1} boxSize="25px" src={require("../assets/logo.png")} />
+      </div>
       {!user ? (
         <div style={{ display: "flex", gap: "15px" }}>
           {/*  eslint-disable-next-line */}
@@ -64,17 +77,29 @@ const Navbar = () => {
       ) : (
         <>
           <Button className="nav-search" onClick={toggleOpen}>
-            <Text fontSize={[12, 15]} fontWeight="400">
+            <Text
+              display={{ base: "none", md: "flex" }}
+              fontSize={[12, 15]}
+              fontWeight="400"
+            >
               Search Users
             </Text>
             <Icon as={CgSearch} />
           </Button>
           <Menu>
             <MenuButton
+              variant="ghost"
+              rightIcon={<RiArrowDropDownLine />}
               style={{ cursor: "pointer" }}
-              as={Avatar}
-              icon={<Avatar name="Guest" src={user.pic} />}
-            />
+              as={Button}
+            >
+              <Avatar
+                boxSize={[8, 9]}
+                size={["sm"]}
+                name={user.name}
+                src={user.pic}
+              />
+            </MenuButton>
             <MenuList className="profile-menu">
               <div className="menu-content">
                 <Button width={["150px", "200px"]} rightIcon={<CgProfile />}>

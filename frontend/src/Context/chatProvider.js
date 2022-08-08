@@ -7,7 +7,9 @@ const ChatProvider = ({ children }) => {
 
   const [user, setUser] = useState({});
 
-  const [isOpen, setOpen] = useState(false);
+  const [isSearchOpen, setSearchOpen] = useState(false);
+
+  const [isProfileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("chakra-ui-color-mode", "dark");
@@ -19,7 +21,16 @@ const ChatProvider = ({ children }) => {
 
   return (
     <ChatContex.Provider
-      value={{ chat, setChat, user, setUser, isOpen, setOpen }}
+      value={{
+        chat,
+        setChat,
+        user,
+        setUser,
+        isSearchOpen,
+        setSearchOpen,
+        isProfileOpen,
+        setProfileOpen,
+      }}
     >
       {children}
     </ChatContex.Provider>

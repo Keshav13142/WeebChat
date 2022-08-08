@@ -41,6 +41,7 @@ const SignUp = () => {
     const file = e.target.files[0];
     if (Math.round(file.size / 1000) > 5000) {
       showToast("File size must be less than 5mb", "warning");
+      setLoading(false);
       return;
     }
     let reader = new FileReader();
