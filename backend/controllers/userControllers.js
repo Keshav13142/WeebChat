@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateJWT");
+const Session = require("../models/sessionModel");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
@@ -68,4 +69,9 @@ const searchUsers = asyncHandler(async (req, res) => {
   } else res.json([]);
 });
 
-module.exports = { registerUser, loginUser, searchUsers };
+const logout = asyncHandler(async (req, res) => {
+  await Session.deleteMany({ user_id: req.user.id });
+  res.status(200).json({ message: "Successfully logged out" });
+});
+
+module.exports = { registerUser, loginUser, searchUsers, logout };

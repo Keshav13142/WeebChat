@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SearchModal from "../components/SearchModal";
+import { ChatContex } from "../Context/chatProvider";
+import { users } from "../utils/mockUsers";
 
 const Chats = () => {
-  const [chats, setchats] = useState([]);
+  const navigate = useNavigate();
 
-  const fetchChats = async () => {
-    const { data } = await axios.get("/api/chats");
-    setchats(data);
-  };
+  const { user, setUser } = useContext(ChatContex);
 
   useEffect(() => {
-    fetchChats();
-  });
+    if (!user) {
+      navigate("/");
+    }
+    //eslint-disable-next-line
+  }, []);
 
   return (
     <>
-      {chats.map((chat, ind) => {
-        return <p key={ind}>{chat.chatName}</p>;
-      })}
+      <SearchModal users={users} />
     </>
   );
 };

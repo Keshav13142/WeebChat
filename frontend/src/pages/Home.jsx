@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Box,
   Container,
@@ -9,12 +10,27 @@ import {
   Tabs,
   useColorMode,
 } from "@chakra-ui/react";
-import SignUp from "../components/SignUp";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Login from "../components/Login";
+import SignUp from "../components/SignUp";
+import { ChatContex } from "../Context/chatProvider";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const { user } = useContext(ChatContex);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/chats");
+    }
+    // eslint-disable-next-line
+  }, []);
+
   // eslint-disable-next-line
   const { colorMode, _ } = useColorMode();
+
   return (
     <Container
       margin={[2, 4]}

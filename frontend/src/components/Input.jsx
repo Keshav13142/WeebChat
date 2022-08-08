@@ -1,9 +1,9 @@
 import {
-  Text,
+  Button,
   Input,
   InputGroup,
   InputRightElement,
-  Button,
+  Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 

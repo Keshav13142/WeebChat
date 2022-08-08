@@ -1,13 +1,16 @@
-import { Button, useToast, VStack, Text, Input } from "@chakra-ui/react";
-import React, { useState } from "react";
-import CustomInput from "./Input";
-import { signUpInputs } from "../utils/inputFeilds";
+import { Button, Input, Text, useToast, VStack } from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChatContex } from "../Context/chatProvider";
+import { signUpInputs } from "../utils/inputFeilds";
+import CustomInput from "./Input";
 
 const SignUp = () => {
   const toast = useToast();
 
   const navigate = useNavigate();
+
+  const { setUser } = useContext(ChatContex);
 
   const [loading, setLoading] = useState(false);
 
@@ -86,6 +89,8 @@ const SignUp = () => {
         "success",
         "You're ready to chat now!!"
       );
+      setUser(response);
+      localStorage.setItem("user", JSON.stringify(response));
       navigate("/chats");
       return;
     } else {

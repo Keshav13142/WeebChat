@@ -27,3 +27,19 @@ body {
   width: 100%;
   gap: 5px;
 }
+
+.nav-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.profile-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  gap: 5px;
+}

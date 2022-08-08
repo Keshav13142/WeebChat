@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import CustomInput from "./Input";
-import { loginInputs } from "../utils/inputFeilds";
 import { Button, useToast, VStack } from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChatContex } from "../Context/chatProvider";
+import { loginInputs } from "../utils/inputFeilds";
+import CustomInput from "./Input";
 
 const Login = () => {
+  const { setUser } = useContext(ChatContex);
+
   const toast = useToast();
 
   const navigate = useNavigate();
@@ -63,10 +66,10 @@ const Login = () => {
     setLoading(false);
 
     if (data.ok) {
-      console.log(response);
       showToast("Login successful", "success", "Happy to see you!!");
+      setUser(response);
+      localStorage.setItem("user", JSON.stringify(response));
       navigate("/chats");
-      return;
     } else {
       showToast(response.error, "error");
     }
