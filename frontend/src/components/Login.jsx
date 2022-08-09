@@ -19,7 +19,7 @@ const Login = () => {
       title: title,
       description: desc,
       status: status,
-      duration: 2000,
+      duration: 3000,
       isClosable: true,
     });
   };

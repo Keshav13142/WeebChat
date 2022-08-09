@@ -9,18 +9,23 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  SkeletonCircle,
-  SkeletonText,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 import { ChatContex } from "../../Context/chatProvider";
+import CustomSkeleton from "../CustomSkeleton";
 import ProfileCards from "../ProfileCards";
 
 const SearchModal = ({ createChat }) => {
-  const { user, isSearchOpen, setSearchOpen } = useContext(ChatContex);
+  const { user, isSearchOpen, setSearchOpen, setSelectedChat, chats } =
+    useContext(ChatContex);
+
+  const toast = useToast();
+
+  const [message, setMessage] = useState("");
 
   const [searchResult, setSearchResult] = useState([]);
 
@@ -30,8 +35,21 @@ const SearchModal = ({ createChat }) => {
 
   const searchUser = async (e) => {
     e.preventDefault();
+    if (query.trim().length === 0) {
+      toast({
+        title: "No friends 🙀??",
+        status: "info",
+        duration: 1000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    }
+
     setSearchResult([]);
+
     setLoading(true);
+
     const data = await fetch(`/api/user?search=${query}`, {
       method: "get",
       headers: new Headers({
@@ -44,7 +62,20 @@ const SearchModal = ({ createChat }) => {
 
     if (data.ok) {
       const response = await data.json();
+      if (response.length === 0) {
+        setMessage("No matches found 😶");
+        return;
+      }
+
       setSearchResult(response);
+    } else {
+      toast({
+        title: "Could not connect!!",
+        description: "Something went wrong 😥",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -59,6 +90,7 @@ const SearchModal = ({ createChat }) => {
       isOpen={isSearchOpen}
       onClose={() => {
         setSearchOpen(false);
+        setMessage("");
       }}
     >
       <ModalOverlay />
@@ -91,15 +123,13 @@ const SearchModal = ({ createChat }) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody className="custom-scrollbar">
-          {loading &&
-            [...new Array(3)].map((item, ind) => (
-              <Box key={ind} mb={5}>
-                <SkeletonCircle />
-                <SkeletonText noOfLines={2} mt="7px" />
-              </Box>
-            ))}
+          {loading && <CustomSkeleton number={1} lines={2} />}
           {searchResult.length === 0 && !loading && (
-            <Text textAlign="center">Search for your friends here!!</Text>
+            <Text fontWeight="300" fontSize="18px" textAlign="center">
+              {message.length === 0
+                ? "Search for your friends here!!"
+                : message}
+            </Text>
           )}
           <VStack spacing={"10px"}>
             {searchResult.map((item, ind) => (

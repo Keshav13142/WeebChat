@@ -6,10 +6,12 @@ import {
   Icon,
   IconButton,
   Image,
+  Kbd,
   Menu,
   MenuButton,
   MenuList,
   Text,
+  Wrap,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
@@ -25,7 +27,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const logout = async () => {
-    localStorage.clear();
+    localStorage.removeItem("user");
 
     setUser(null);
 
@@ -49,7 +51,6 @@ const Navbar = () => {
       display="flex"
       minWidth="100vw"
       justifyContent="space-evenly"
-      // gap={10}
       alignItems="center"
       p={2}
     >
@@ -77,14 +78,17 @@ const Navbar = () => {
       ) : (
         <>
           <Button className="nav-search" onClick={toggleOpen}>
+            <Icon as={CgSearch} />
             <Text
               display={{ base: "none", md: "flex" }}
               fontSize={[12, 15]}
-              fontWeight="400"
+              fontWeight="300 "
             >
               Search Users
             </Text>
-            <Icon as={CgSearch} />
+            <Wrap display={{ base: "none", md: "flex" }}>
+              <Kbd>Ctrl</Kbd>+<Kbd>K</Kbd>
+            </Wrap>
           </Button>
           <Menu>
             <MenuButton

@@ -3,9 +3,13 @@ import { createContext, useEffect, useState } from "react";
 export const ChatContex = createContext();
 
 const ChatProvider = ({ children }) => {
-  const [chat, setChat] = useState([]);
+  const [chats, setChats] = useState([]);
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
+
+  const [selectedChat, setSelectedChat] = useState(null);
+
+  const [displayUser, setDisplayUser] = useState();
 
   const [isSearchOpen, setSearchOpen] = useState(false);
 
@@ -22,14 +26,18 @@ const ChatProvider = ({ children }) => {
   return (
     <ChatContex.Provider
       value={{
-        chat,
-        setChat,
+        chats,
+        setChats,
         user,
         setUser,
         isSearchOpen,
         setSearchOpen,
         isProfileOpen,
         setProfileOpen,
+        selectedChat,
+        setSelectedChat,
+        displayUser,
+        setDisplayUser,
       }}
     >
       {children}
