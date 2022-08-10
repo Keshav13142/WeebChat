@@ -84,7 +84,6 @@ const SignUp = () => {
     setLoading(false);
 
     if (data.ok) {
-      console.log(response);
       showToast(
         "Account created successfully",
         "success",

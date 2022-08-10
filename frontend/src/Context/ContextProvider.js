@@ -12,17 +12,17 @@ const ContextProvider = ({ children }) => {
 
   const [selectedChat, setSelectedChat] = useState(null);
 
-  const [displayUser, setDisplayUser] = useState();
+  const [profileDetails, setProfileDetails] = useState({});
 
   const [isSearchOpen, setSearchOpen] = useState(false);
+
+  const [chatLoading, setChatLoading] = useState(false);
 
   const [isGroupOpen, setGroupOpen] = useState(false);
 
   const [isProfileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("chakra-ui-color-mode", "dark");
-
     let userInfo;
     if ((userInfo = JSON.parse(localStorage.getItem("user")))) {
       setUser(userInfo);
@@ -45,10 +45,12 @@ const ContextProvider = ({ children }) => {
         setProfileOpen,
         selectedChat,
         setSelectedChat,
-        displayUser,
-        setDisplayUser,
+        profileDetails,
+        setProfileDetails,
         isGroupOpen,
         setGroupOpen,
+        chatLoading,
+        setChatLoading,
       }}
     >
       {children}

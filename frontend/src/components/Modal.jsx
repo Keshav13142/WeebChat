@@ -12,6 +12,7 @@ import {
 import React, { useContext, useState } from "react";
 import { Context } from "../Context/ContextProvider";
 import CreateGroup from "./chats/CreateGroup";
+import Profile from "./Profile";
 import SearchInput from "./search/SearchInput";
 import SearchResult from "./search/SearchResult";
 
@@ -20,13 +21,14 @@ const CustomModal = ({ createChat }) => {
     user,
     isSearchOpen,
     setSearchOpen,
+    // selectedChat,
     // setSelectedChat,
     // chats,
     isProfileOpen,
     setProfileOpen,
     isGroupOpen,
     setGroupOpen,
-    displayUser,
+    profileDetails,
   } = useContext(Context);
 
   const toast = useToast();
@@ -115,8 +117,15 @@ const CustomModal = ({ createChat }) => {
             />
           )}
           {isProfileOpen && (
-            <Text fontSize="25" textAlign="center">
-              {displayUser.name}
+            <Text
+              rounded="full"
+              color="cyan.200"
+              fontSize="25"
+              textAlign="center"
+            >
+              {profileDetails.isGroupChat
+                ? profileDetails.chatName
+                : profileDetails.users?.[1].name}
             </Text>
           )}
           {isGroupOpen && (
@@ -126,7 +135,7 @@ const CustomModal = ({ createChat }) => {
           )}
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody className="custom-scrollbar">
+        <ModalBody className="custom-scrollbar-search">
           {isSearchOpen && (
             <SearchResult
               loading={loading}
@@ -135,7 +144,7 @@ const CustomModal = ({ createChat }) => {
               message={message}
             />
           )}
-          {isProfileOpen && {}}
+          {isProfileOpen && <Profile />}
           {isGroupOpen && (
             <CreateGroup
               loading={loading}

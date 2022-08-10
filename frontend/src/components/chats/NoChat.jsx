@@ -1,4 +1,4 @@
-import { Box, Heading, Image } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Context } from "../../Context/ContextProvider";
 
@@ -17,7 +17,6 @@ const NoChat = () => {
       gap="40px"
     >
       <Heading fontFamily="PT Sans">Select a chat to get started 🚀</Heading>
-      <Image width="16" src={require("../../assets/chat.png")} />
     </Box>
   );
 };

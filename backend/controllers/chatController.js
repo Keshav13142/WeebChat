@@ -6,7 +6,7 @@ const accessChats = asyncHandler(async (req, res) => {
   const { userId } = req.body;
 
   if (!userId) {
-    console.log("User does not exist");
+    throw new Error("User does not exist");
   } else {
     var chat = await Chat.find({
       isGroupChat: false,

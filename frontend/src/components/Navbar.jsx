@@ -22,7 +22,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../Context/ContextProvider";
 
 const Navbar = () => {
-  const { user, setUser, setSearchOpen } = useContext(Context);
+  const {
+    user,
+    setUser,
+    setSearchOpen,
+    setProfileOpen,
+    setProfileDetails,
+    setChats,
+  } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -30,7 +37,7 @@ const Navbar = () => {
     localStorage.removeItem("user");
 
     setUser(null);
-
+    setChats([]);
     navigate("/");
 
     await fetch("/api/user/logout", {
@@ -106,7 +113,14 @@ const Navbar = () => {
             </MenuButton>
             <MenuList className="profile-menu">
               <div className="menu-content">
-                <Button width={["150px", "200px"]} rightIcon={<CgProfile />}>
+                <Button
+                  width={["150px", "200px"]}
+                  rightIcon={<CgProfile />}
+                  onClick={() => {
+                    setProfileDetails({ users: [null, user] });
+                    setProfileOpen(true);
+                  }}
+                >
                   Your Profile
                 </Button>
               </div>

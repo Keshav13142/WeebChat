@@ -9,13 +9,14 @@ const ProfileCards = ({ user, createChat }) => {
       value={JSON.stringify(user)}
       cursor={"pointer"}
       display={"flex"}
-      justifyContent="start"
+      justifyContent="flex-start"
       alignItems="center"
-      borderRadius="10px"
+      borderRadius="5px"
       _hover={{ backgroundColor: "#2c313d" }}
-      gap="10px"
+      gap="15px"
       padding="25px"
       onClick={createChat}
+      borderBottom="1px solid #434455"
     >
       <Avatar marginLeft="5px" boxSize="10" src={user.pic} name={user.name} />
       <div

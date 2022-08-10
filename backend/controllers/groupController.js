@@ -20,7 +20,7 @@ const createGroup = asyncHandler(async (req, res) => {
     groupAdmin: await User.findOne({ _id: req.user._id }),
   });
 
-  chat = await Chat.find({ _id: chat._id })
+  chat = await Chat.findOne({ _id: chat._id })
     .populate("users", "-password")
     .populate("latestMessage")
     .populate("groupAdmin", "-password");
@@ -35,13 +35,30 @@ const renameGroup = asyncHandler(async (req, res) => {
 
 const leaveGroup = asyncHandler(async (req, res) => {
   const { chatId } = req.body;
-  const chat = await Chat.updateOne(
-    { _id: chatId },
-    { $pullAll: { users: [{ _id: req.user._id }] } }
+  const chat = await Chat.findByIdAndUpdate(
+    chatId,
+    { $pullAll: { users: [{ _id: req.user._id }] } },
+    { new: true }
   )
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
     .populate("latestMessage");
+  if (chat) res.json(chat);
+  else throw new Error("Chat not found!!!");
+});
+
+const removeUser = asyncHandler(async (req, res) => {
+  const { chatId, userId } = req.body;
+
+  const chat = await Chat.findByIdAndUpdate(
+    chatId,
+    { $pullAll: { users: [{ _id: userId }] } },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password")
+    .populate("latestMessage");
+
   if (chat) res.json(chat);
   else throw new Error("Chat not found!!!");
 });
@@ -61,4 +78,10 @@ const addUserToGroup = asyncHandler(async (req, res) => {
   else throw new Error("Chat not found!!!");
 });
 
-module.exports = { createGroup, renameGroup, leaveGroup, addUserToGroup };
+module.exports = {
+  createGroup,
+  renameGroup,
+  leaveGroup,
+  addUserToGroup,
+  removeUser,
+};

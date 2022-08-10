@@ -23,6 +23,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
     if (user) {
       res.status(200).json({
+        _id: user._id,
         name,
         email,
         pic,
@@ -47,6 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
       throw new Error("Invalid credentials");
     } else {
       res.status(200).json({
+        _id: user._id,
         name: user.name,
         email,
         pic: user.pic,

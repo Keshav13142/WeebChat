@@ -1,22 +1,33 @@
 import { Avatar, Box, Divider, Heading, IconButton } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { VscInfo } from "react-icons/vsc";
 import { Context } from "../../Context/ContextProvider";
 
 const ChatBox = () => {
   const {
     // chats,
     // setChats,
-    // user,
+    user,
     // setUser,
     // isSearchOpen,
     // setSearchOpen,
     // isProfileOpen,
     setProfileOpen,
     selectedChat,
-    setDisplayUser,
+    setProfileDetails,
     setSelectedChat,
   } = useContext(Context);
+
+  const [sender, setSender] = useState({});
+
+  useEffect(() => {
+    if (selectedChat?.users?.[1]?.name === user.name) {
+      setSender(selectedChat?.users?.[0]);
+      return;
+    } else setSender(selectedChat?.users?.[1]);
+    //eslint-disable-next-line
+  }, [selectedChat.users]);
   return (
     <Box
       backgroundColor="#12161f"
@@ -46,22 +57,51 @@ const ChatBox = () => {
           }}
         />
         <Box
+          height="fit-content"
+          width="100%"
           display={"flex"}
           justifyContent="space-between"
           alignItems="center"
           gap="10px"
-          cursor="pointer"
-          onClick={() => {
-            setDisplayUser(selectedChat.users[1]);
-            setProfileOpen(true);
-          }}
         >
-          <Avatar
-            boxSize="10"
-            name={selectedChat?.users[1].name}
-            src={selectedChat?.users[1].pic}
+          <Box
+            display={"flex"}
+            justifyContent="space-between"
+            alignItems="center"
+            gap="10px"
+            cursor="pointer"
+            onClick={() => {
+              setProfileDetails(selectedChat);
+              setProfileOpen(true);
+            }}
+          >
+            <Avatar
+              boxSize="10"
+              name={
+                selectedChat?.isGroupChat
+                  ? selectedChat?.chatName
+                  : sender?.name
+              }
+              src={
+                selectedChat?.isGroupChat
+                  ? selectedChat?.chatAvatar
+                  : sender?.pic
+              }
+            />
+            <Heading fontSize="19">
+              {selectedChat?.isGroupChat
+                ? selectedChat?.chatName
+                : sender?.name}
+            </Heading>
+          </Box>
+          <IconButton
+            onClick={() => {
+              setProfileDetails(selectedChat);
+              setProfileOpen(true);
+            }}
+            background="none"
+            icon={<VscInfo />}
           />
-          <Heading fontSize="20">{selectedChat?.users[1].name}</Heading>
         </Box>
       </Box>
       <Divider />

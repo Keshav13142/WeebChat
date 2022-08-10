@@ -1,12 +1,12 @@
 import { Avatar, Box, Text } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
 
 const ChatProfile = ({ chat }) => {
   const {
     // chats,
     // setChats,
-    // user,
+    user,
     // setUser,
     // isSearchOpen,
     // setSearchOpen,
@@ -16,11 +16,21 @@ const ChatProfile = ({ chat }) => {
     setSelectedChat,
   } = useContext(Context);
 
+  const [sender, setSender] = useState({});
+
+  useEffect(() => {
+    if (chat?.users?.[1]?.name === user?.name) {
+      setSender(chat?.users?.[0]);
+      return;
+    } else setSender(chat?.users?.[1]);
+    //eslint-disable-next-line
+  }, [chat]);
+
   return (
     <Box
       width="100%"
       variant="ghost"
-      name={chat.users[1]._id}
+      name={chat?._id}
       cursor={"pointer"}
       display={"flex"}
       justifyContent="start"
@@ -32,12 +42,13 @@ const ChatProfile = ({ chat }) => {
       onClick={() => {
         setSelectedChat(chat);
       }}
+      borderBottom="1px solid #292d35"
     >
       <Avatar
         marginLeft="5px"
         boxSize="10"
-        src={chat.users[1].pic}
-        name={chat.users[1].name}
+        src={chat?.isGroupChat ? chat.chatAvatar : sender.pic}
+        name={chat?.isGroupChat ? chat.chatName : sender.name}
       />
       <div
         style={{
@@ -48,7 +59,9 @@ const ChatProfile = ({ chat }) => {
           gap: "3px",
         }}
       >
-        <Text fontSize={18}>{chat.users[1].name}</Text>
+        <Text fontSize={18}>
+          {chat?.isGroupChat ? chat?.chatName : sender.name}
+        </Text>
         <Text fontSize="15px" fontWeight="200">
           {selectedChat?.latestMessage || "Start a chat"}
         </Text>

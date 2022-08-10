@@ -1,17 +1,18 @@
-import { Box, Button, Divider, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, VStack } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { RiAddFill } from "react-icons/ri";
 import { Context } from "../../Context/ContextProvider";
+import CustomSkeleton from "../CustomSkeleton";
 import ChatProfile from "./ChatProfile";
 
 const MyChats = () => {
   const {
     chats,
     selectedChat,
+    chatLoading,
     // isGroupOpen,
     setGroupOpen,
     // setChats,
-    // user,
     // setUser,
     // isSearchOpen,
     // setSearchOpen,
@@ -19,6 +20,7 @@ const MyChats = () => {
     // setProfileOpen,
     // setSelectedChat,
   } = useContext(Context);
+
   return (
     <Box
       backgroundColor="#12161f"
@@ -48,9 +50,9 @@ const MyChats = () => {
           Group
         </Button>
       </Box>
-      <Divider />
       <Box height="100%" width="100%">
-        {chats.length === 0 ? (
+        {chatLoading && <CustomSkeleton lines={4} number={4} />}
+        {chats.length === 0 && !chatLoading ? (
           <>
             <Text marginTop="13rem" textAlign="center" fontSize="16">
               Conversations you have will appear here....
@@ -60,10 +62,16 @@ const MyChats = () => {
             </Text>
           </>
         ) : (
-          <VStack align="start" padding="0" spacing={["10px", "20px"]}>
-            {chats.map((chat, key) => (
-              <ChatProfile chat={chat} key={chat._id} />
-            ))}
+          <VStack
+            className="custom-scrollbar"
+            maxH="80vh"
+            align="start"
+            overflowY="scroll"
+            padding="0"
+            spacing={["5px", "10px"]}
+          >
+            {Array.isArray(chats) &&
+              chats?.map((chat) => <ChatProfile chat={chat} key={chat._id} />)}
           </VStack>
         )}
       </Box>

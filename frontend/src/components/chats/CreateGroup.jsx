@@ -36,7 +36,7 @@ const CreateGroup = ({
     // setProfileOpen,
     // isGroupOpen,
     setGroupOpen,
-    // displayUser,
+    // profileDetails,
   } = useContext(Context);
 
   const [group, setGroup] = useState({
@@ -44,7 +44,7 @@ const CreateGroup = ({
     chatAvatar: "",
   });
 
-  const { searchQuery, setSearchQuery } = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toast = useToast();
 
@@ -63,7 +63,10 @@ const CreateGroup = ({
   const [selectedUsers, setselectedUsers] = useState([]);
 
   const [userList, setUserList] = useState(
-    chats.slice(0, 5).map((item) => item.users[1])
+    Array.isArray(chats) &&
+      chats
+        ?.slice(0, 5)
+        .map((item) => (!item.isGroupChat ? item.users[1] : null))
   );
 
   const getBase64 = (e) => {
@@ -97,7 +100,7 @@ const CreateGroup = ({
       showToast("Please enter a group name", "warning", "top");
       return;
     }
-    if (selectedId.length === 0) {
+    if (selectedId.length < 2) {
       showToast(
         "Minimum 2 members needed!!",
         "warning",
@@ -117,9 +120,17 @@ const CreateGroup = ({
 
     if (response.ok) {
       const data = await response.json();
-      setChats(...chats, data);
+      setChats([...chats, data]);
       setSelectedChat(data);
       setGroupOpen(false);
+    } else {
+      toast({
+        title: "Could not connect!!",
+        description: "Something went wrong 😥",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -135,17 +146,20 @@ const CreateGroup = ({
 
   const updateSearch = (e) => {
     const key = e.currentTarget.value.toLowerCase();
+
+    setSearchQuery(key);
     if (key.trim() === "") {
-      setUserList(chats.slice(0, 5).map((item) => item.users[1]));
+      setUserList(chats?.slice(0, 5).map((item) => item.users[1]));
       return;
     }
     setUserList(
-      chats.map((item) => {
+      chats?.map((item) => {
         if (
           item.users[1].name.toLowerCase().includes(key) ||
           item.users[1].email.includes(key)
         )
           return item.users[1];
+        return null;
       })
     );
   };

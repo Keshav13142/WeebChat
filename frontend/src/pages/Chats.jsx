@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Container, useToast } from "@chakra-ui/react";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatBox from "../components/chats/ChatBox";
@@ -12,32 +12,20 @@ const Chats = () => {
 
   const {
     user,
+    setUser,
     setSearchOpen,
     selectedChat,
     setSelectedChat,
     chats,
     setChats,
+    setChatLoading,
   } = useContext(Context);
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/");
-      return;
-    }
-
-    fetchChats();
-
-    document.addEventListener("keydown", (event) => {
-      if (event.ctrlKey && event.key === "k") {
-        event.preventDefault();
-        setSearchOpen(true);
-      }
-    });
-
-    //eslint-disable-next-line
-  }, [user]);
+  const toast = useToast();
 
   const fetchChats = async () => {
+    setChatLoading(true);
+
     const response = await fetch("/api/chat", {
       method: "get",
       headers: new Headers({
@@ -45,9 +33,26 @@ const Chats = () => {
         Authorization: "Bearer " + user.token,
       }),
     });
+
+    setChatLoading(false);
+
     if (response.ok) {
       const data = await response.json();
       setChats(data);
+    } else {
+      toast({
+        title: "Sesstion had expired",
+        description: "Please log in again!!",
+        duration: 3000,
+        position: "top",
+        status: "warning",
+      });
+
+      setUser(null);
+
+      setChats([]);
+
+      navigate("/");
     }
   };
 
@@ -72,8 +77,33 @@ const Chats = () => {
         setChats([...chats, data]);
       }
       setSelectedChat(data);
+    } else {
+      toast({
+        title: "Somthing went wrong!",
+        duration: 3000,
+        position: "top",
+        status: "error",
+      });
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+      return;
+    }
+
+    fetchChats();
+
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey && event.key === "k") {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+    });
+
+    //eslint-disable-next-line
+  }, [user]);
 
   return (
     <>

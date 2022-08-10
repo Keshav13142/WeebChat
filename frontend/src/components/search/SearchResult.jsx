@@ -21,8 +21,8 @@ const SearchResult = ({
             : message}
         </Text>
       )}
-      <VStack width="100%" spacing={"15px"}>
-        {searchResult.map((item, ind) => {
+      <VStack width="100%" maxHeight="350px" spacing={"15px"}>
+        {searchResult.slice(0, 10).map((item, ind) => {
           if (!item) return null;
           return (
             <ProfileCards

@@ -33,7 +33,7 @@ const Login = () => {
     setuser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const login = async () => {
+  const login = async (e) => {
     if (user.email === "" || user.password === "") {
       showToast(
         "Email or password cannot be empty",
@@ -97,6 +97,7 @@ const Login = () => {
         Login
       </Button>
       <Button
+        type="button"
         name="guest"
         width="full"
         colorScheme={"orange"}
