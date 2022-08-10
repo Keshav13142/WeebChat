@@ -1,6 +1,6 @@
 import { Avatar, Box, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { ChatContex } from "../../Context/ContextProvider";
+import { Context } from "../../Context/ContextProvider";
 
 const ChatProfile = ({ chat }) => {
   const {
@@ -14,7 +14,7 @@ const ChatProfile = ({ chat }) => {
     // setProfileOpen,
     selectedChat,
     setSelectedChat,
-  } = useContext(ChatContex);
+  } = useContext(Context);
 
   return (
     <Box

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const ChatContex = createContext();
+export const Context = createContext();
 
 const ContextProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const ContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <ChatContex.Provider
+    <Context.Provider
       value={{
         chats,
         setChats,
@@ -52,7 +52,7 @@ const ContextProvider = ({ children }) => {
       }}
     >
       {children}
-    </ChatContex.Provider>
+    </Context.Provider>
   );
 };
 

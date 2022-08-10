@@ -1,13 +1,14 @@
 import { Box, Button, Divider, Heading, Text, VStack } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { RiAddFill } from "react-icons/ri";
-import { ChatContex } from "../../Context/ContextProvider";
+import { Context } from "../../Context/ContextProvider";
 import ChatProfile from "./ChatProfile";
 
 const MyChats = () => {
   const {
     chats,
     selectedChat,
+    // isGroupOpen,
     setGroupOpen,
     // setChats,
     // user,
@@ -17,8 +18,7 @@ const MyChats = () => {
     // isProfileOpen,
     // setProfileOpen,
     // setSelectedChat,
-    // isGroupOpen,
-  } = useContext(ChatContex);
+  } = useContext(Context);
   return (
     <Box
       backgroundColor="#12161f"

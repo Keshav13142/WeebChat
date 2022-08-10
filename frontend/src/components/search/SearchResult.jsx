@@ -21,14 +21,17 @@ const SearchResult = ({
             : message}
         </Text>
       )}
-      <VStack spacing={"20px"}>
-        {searchResult.map((item, ind) => (
-          <ProfileCards
-            key={ind}
-            user={item}
-            createChat={createChat || addUser}
-          />
-        ))}
+      <VStack width="100%" spacing={"15px"}>
+        {searchResult.map((item, ind) => {
+          if (!item) return null;
+          return (
+            <ProfileCards
+              key={ind}
+              user={item}
+              createChat={createChat || addUser}
+            />
+          );
+        })}
       </VStack>
     </>
   );

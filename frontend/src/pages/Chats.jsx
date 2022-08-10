@@ -5,7 +5,7 @@ import ChatBox from "../components/chats/ChatBox";
 import MyChats from "../components/chats/MyChats";
 import NoChat from "../components/chats/NoChat";
 import CustomModal from "../components/Modal";
-import { ChatContex } from "../Context/ContextProvider";
+import { Context } from "../Context/ContextProvider";
 
 const Chats = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Chats = () => {
     setSelectedChat,
     chats,
     setChats,
-  } = useContext(ChatContex);
+  } = useContext(Context);
 
   useEffect(() => {
     if (!user) {
@@ -53,8 +53,7 @@ const Chats = () => {
 
   const createChat = async (e) => {
     setSearchOpen(false);
-
-    const userId = e.currentTarget.value;
+    const userId = JSON.parse(e.currentTarget.value)._id;
 
     if (!userId) return;
 

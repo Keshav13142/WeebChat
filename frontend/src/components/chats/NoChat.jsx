@@ -1,9 +1,9 @@
 import { Box, Heading, Image } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { ChatContex } from "../../Context/ContextProvider";
+import { Context } from "../../Context/ContextProvider";
 
 const NoChat = () => {
-  const { selectedChat } = useState(ChatContex);
+  const { selectedChat } = useState(Context);
   return (
     <Box
       width={{ base: "100%", md: "70%" }}

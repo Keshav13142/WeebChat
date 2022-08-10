@@ -1,7 +1,7 @@
 import { Button, Input, Text, useToast, VStack } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChatContex } from "../Context/ContextProvider";
+import { Context } from "../Context/ContextProvider";
 import { signUpInputs } from "../utils/inputFeilds";
 import CustomInput from "./Input";
 
@@ -10,7 +10,7 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const { setUser } = useContext(ChatContex);
+  const { setUser } = useContext(Context);
 
   const [loading, setLoading] = useState(false);
 

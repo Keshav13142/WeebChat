@@ -19,10 +19,10 @@ import { CgLogOut, CgProfile, CgSearch } from "react-icons/cg";
 import { GoMarkGithub } from "react-icons/go";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-import { ChatContex } from "../Context/ContextProvider";
+import { Context } from "../Context/ContextProvider";
 
 const Navbar = () => {
-  const { user, setUser, setSearchOpen } = useContext(ChatContex);
+  const { user, setUser, setSearchOpen } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ const Navbar = () => {
       {!user ? (
         <div style={{ display: "flex", gap: "15px" }}>
           {/*  eslint-disable-next-line */}
-          <a href="https://github.com/keshav13142" target="_blank">
+          <a href="https://github.com/Keshav13142/WeebChat" target="_blank">
             <IconButton icon={<GoMarkGithub />} />
           </a>
           <Link to="/about">

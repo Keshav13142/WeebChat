@@ -10,7 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import { ChatContex } from "../Context/ContextProvider";
+import { Context } from "../Context/ContextProvider";
 import CreateGroup from "./chats/CreateGroup";
 import SearchInput from "./search/SearchInput";
 import SearchResult from "./search/SearchResult";
@@ -27,7 +27,7 @@ const CustomModal = ({ createChat }) => {
     isGroupOpen,
     setGroupOpen,
     displayUser,
-  } = useContext(ChatContex);
+  } = useContext(Context);
 
   const toast = useToast();
 
@@ -91,7 +91,7 @@ const CustomModal = ({ createChat }) => {
 
   return (
     <Modal
-      size={["xs"]}
+      size={["xs", "sm"]}
       scrollBehavior="inside"
       isOpen={isSearchOpen || isGroupOpen || isProfileOpen}
       onClose={() => {
@@ -104,8 +104,8 @@ const CustomModal = ({ createChat }) => {
       }}
     >
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
+      <ModalContent height="fit-content">
+        <ModalHeader height="fit-content">
           {isSearchOpen && (
             <SearchInput
               query={query}
@@ -114,7 +114,11 @@ const CustomModal = ({ createChat }) => {
               loading={loading}
             />
           )}
-          {isProfileOpen && displayUser.name}
+          {isProfileOpen && (
+            <Text fontSize="25" textAlign="center">
+              {displayUser.name}
+            </Text>
+          )}
           {isGroupOpen && (
             <Text fontSize="25" textAlign="center">
               Create a new Group

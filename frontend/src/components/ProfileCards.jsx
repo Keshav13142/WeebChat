@@ -6,7 +6,7 @@ const ProfileCards = ({ user, createChat }) => {
     <Button
       width="100%"
       variant="ghost"
-      value={user._id}
+      value={JSON.stringify(user)}
       cursor={"pointer"}
       display={"flex"}
       justifyContent="start"

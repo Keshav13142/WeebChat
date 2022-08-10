@@ -1,7 +1,7 @@
 import { Avatar, Box, Divider, Heading, IconButton } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
-import { ChatContex } from "../../Context/ContextProvider";
+import { Context } from "../../Context/ContextProvider";
 
 const ChatBox = () => {
   const {
@@ -16,7 +16,7 @@ const ChatBox = () => {
     selectedChat,
     setDisplayUser,
     setSelectedChat,
-  } = useContext(ChatContex);
+  } = useContext(Context);
   return (
     <Box
       backgroundColor="#12161f"

@@ -14,12 +14,12 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
-import { ChatContex } from "../Context/ContextProvider";
+import { Context } from "../Context/ContextProvider";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const { user } = useContext(ChatContex);
+  const { user } = useContext(Context);
 
   useEffect(() => {
     if (user) {
