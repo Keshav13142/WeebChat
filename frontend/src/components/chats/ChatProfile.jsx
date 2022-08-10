@@ -1,17 +1,17 @@
-import { Avatar, Box, Button, Text } from "@chakra-ui/react";
+import { Avatar, Box, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { ChatContex } from "../../Context/chatProvider";
+import { ChatContex } from "../../Context/ContextProvider";
 
 const ChatProfile = ({ chat }) => {
   const {
-    chats,
-    setChats,
-    user,
-    setUser,
-    isSearchOpen,
-    setSearchOpen,
-    isProfileOpen,
-    setProfileOpen,
+    // chats,
+    // setChats,
+    // user,
+    // setUser,
+    // isSearchOpen,
+    // setSearchOpen,
+    // isProfileOpen,
+    // setProfileOpen,
     selectedChat,
     setSelectedChat,
   } = useContext(ChatContex);

@@ -3,7 +3,7 @@ const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
 
 const createGroup = asyncHandler(async (req, res) => {
-  const { users, chatName } = req.body;
+  const { users, chatName, chatAvatar } = req.body;
 
   if (users.length < 2) {
     res.status(401);
@@ -16,6 +16,7 @@ const createGroup = asyncHandler(async (req, res) => {
     isGroupChat: true,
     users: users,
     chatName,
+    chatAvatar,
     groupAdmin: await User.findOne({ _id: req.user._id }),
   });
 

@@ -1,12 +1,11 @@
-import { Box, Container } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatBox from "../components/chats/ChatBox";
 import MyChats from "../components/chats/MyChats";
 import NoChat from "../components/chats/NoChat";
-import ProfileModal from "../components/modals/ProfileModal";
-import SearchModal from "../components/modals/SearchModal";
-import { ChatContex } from "../Context/chatProvider";
+import CustomModal from "../components/Modal";
+import { ChatContex } from "../Context/ContextProvider";
 
 const Chats = () => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ const Chats = () => {
     });
 
     //eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   const fetchChats = async () => {
     const response = await fetch("/api/chat", {
@@ -54,7 +53,10 @@ const Chats = () => {
 
   const createChat = async (e) => {
     setSearchOpen(false);
-    const userId = e.currentTarget.name;
+
+    const userId = e.currentTarget.value;
+
+    if (!userId) return;
 
     const response = await fetch("/api/chat", {
       method: "post",
@@ -69,15 +71,14 @@ const Chats = () => {
       const data = await response.json();
       if (!chats.find((item) => item._id === data._id)) {
         setChats([...chats, data]);
-        setSelectedChat(data);
       }
+      setSelectedChat(data);
     }
   };
 
   return (
     <>
-      <SearchModal createChat={createChat} />
-      <ProfileModal />
+      <CustomModal createChat={createChat} />
       <Container
         padding="10px"
         display="flex"

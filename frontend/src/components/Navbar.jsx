@@ -19,7 +19,7 @@ import { CgLogOut, CgProfile, CgSearch } from "react-icons/cg";
 import { GoMarkGithub } from "react-icons/go";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-import { ChatContex } from "../Context/chatProvider";
+import { ChatContex } from "../Context/ContextProvider";
 
 const Navbar = () => {
   const { user, setUser, setSearchOpen } = useContext(ChatContex);

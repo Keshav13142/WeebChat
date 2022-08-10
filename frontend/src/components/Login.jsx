@@ -1,7 +1,7 @@
 import { Button, useToast, VStack } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChatContex } from "../Context/chatProvider";
+import { ChatContex } from "../Context/ContextProvider";
 import { loginInputs } from "../utils/inputFeilds";
 import CustomInput from "./Input";
 

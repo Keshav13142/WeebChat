@@ -1,23 +1,17 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Heading,
-  VStack,
-} from "@chakra-ui/react";
+import { Avatar, Box, Divider, Heading, IconButton } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { ChatContex } from "../../Context/chatProvider";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { ChatContex } from "../../Context/ContextProvider";
 
 const ChatBox = () => {
   const {
-    chats,
-    setChats,
-    user,
-    setUser,
-    isSearchOpen,
-    setSearchOpen,
-    isProfileOpen,
+    // chats,
+    // setChats,
+    // user,
+    // setUser,
+    // isSearchOpen,
+    // setSearchOpen,
+    // isProfileOpen,
     setProfileOpen,
     selectedChat,
     setDisplayUser,
@@ -25,7 +19,7 @@ const ChatBox = () => {
   } = useContext(ChatContex);
   return (
     <Box
-      backgroundColor="#0f131a"
+      backgroundColor="#12161f"
       display={"flex"}
       flexDirection="column"
       justifyContent="center"
@@ -39,9 +33,18 @@ const ChatBox = () => {
         height="fit-content"
         width="100%"
         display={"flex"}
-        justifyContent="space-between"
+        justifyContent="flex-start"
         alignItems="center"
+        gap="10px"
       >
+        <IconButton
+          bgColor="#0f131a"
+          display="flex"
+          icon={<MdOutlineArrowBackIosNew />}
+          onClick={() => {
+            setSelectedChat(null);
+          }}
+        />
         <Box
           display={"flex"}
           justifyContent="space-between"

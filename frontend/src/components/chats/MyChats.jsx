@@ -1,25 +1,27 @@
-import { Box, Button, Divider, Heading, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, Heading, Text, VStack } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { RiAddFill } from "react-icons/ri";
-import { ChatContex } from "../../Context/chatProvider";
+import { ChatContex } from "../../Context/ContextProvider";
 import ChatProfile from "./ChatProfile";
 
 const MyChats = () => {
   const {
     chats,
-    setChats,
-    user,
-    setUser,
-    isSearchOpen,
-    setSearchOpen,
-    isProfileOpen,
-    setProfileOpen,
     selectedChat,
-    setSelectedChat,
+    setGroupOpen,
+    // setChats,
+    // user,
+    // setUser,
+    // isSearchOpen,
+    // setSearchOpen,
+    // isProfileOpen,
+    // setProfileOpen,
+    // setSelectedChat,
+    // isGroupOpen,
   } = useContext(ChatContex);
   return (
     <Box
-      backgroundColor="#0f131a"
+      backgroundColor="#12161f"
       display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDirection="column"
       justifyContent="center"
@@ -38,17 +40,32 @@ const MyChats = () => {
         padding="5px"
       >
         <Heading fontSize="20">My Chats</Heading>
-        <Button size={["sm"]} rightIcon={<RiAddFill />}>
+        <Button
+          size={["sm"]}
+          rightIcon={<RiAddFill />}
+          onClick={() => setGroupOpen(true)}
+        >
           Group
         </Button>
       </Box>
       <Divider />
       <Box height="100%" width="100%">
-        <VStack align="start" padding="0" spacing={["10px", "20px"]}>
-          {chats.map((chat, key) => (
-            <ChatProfile chat={chat} key={chat._id} />
-          ))}
-        </VStack>
+        {chats.length === 0 ? (
+          <>
+            <Text marginTop="13rem" textAlign="center" fontSize="16">
+              Conversations you have will appear here....
+            </Text>
+            <Text textAlign="center" fontSize="16">
+              Search for users to get started
+            </Text>
+          </>
+        ) : (
+          <VStack align="start" padding="0" spacing={["10px", "20px"]}>
+            {chats.map((chat, key) => (
+              <ChatProfile chat={chat} key={chat._id} />
+            ))}
+          </VStack>
+        )}
       </Box>
     </Box>
   );

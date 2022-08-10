@@ -1,7 +1,4 @@
 import {
-  Box,
-  IconButton,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,23 +8,32 @@ import {
   ModalOverlay,
   Text,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import { CgSearch } from "react-icons/cg";
-import { ChatContex } from "../../Context/chatProvider";
-import CustomSkeleton from "../CustomSkeleton";
-import ProfileCards from "../ProfileCards";
+import { ChatContex } from "../Context/ContextProvider";
+import CreateGroup from "./chats/CreateGroup";
+import SearchInput from "./search/SearchInput";
+import SearchResult from "./search/SearchResult";
 
-const SearchModal = ({ createChat }) => {
-  const { user, isSearchOpen, setSearchOpen, setSelectedChat, chats } =
-    useContext(ChatContex);
+const CustomModal = ({ createChat }) => {
+  const {
+    user,
+    isSearchOpen,
+    setSearchOpen,
+    // setSelectedChat,
+    // chats,
+    isProfileOpen,
+    setProfileOpen,
+    isGroupOpen,
+    setGroupOpen,
+    displayUser,
+  } = useContext(ChatContex);
 
   const toast = useToast();
 
-  const [message, setMessage] = useState("");
-
   const [searchResult, setSearchResult] = useState([]);
+
+  const [message, setMessage] = useState("");
 
   const [query, setQuery] = useState("");
 
@@ -87,55 +93,56 @@ const SearchModal = ({ createChat }) => {
     <Modal
       size={["xs"]}
       scrollBehavior="inside"
-      isOpen={isSearchOpen}
+      isOpen={isSearchOpen || isGroupOpen || isProfileOpen}
       onClose={() => {
         setSearchOpen(false);
+        setGroupOpen(false);
+        setProfileOpen(false);
+        setSearchResult([]);
+        setQuery("");
         setMessage("");
       }}
     >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <form onSubmit={searchUser}>
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "30px",
-              }}
-            >
-              <Input
-                onChange={updateQuery}
-                placeholder="Name or email"
-                value={query}
-              />
-              <IconButton
-                type="submit"
-                isLoading={loading}
-                icon={<CgSearch />}
-                size="md"
-                onClick={searchUser}
-              />
-            </div>
-          </form>
+          {isSearchOpen && (
+            <SearchInput
+              query={query}
+              updateQuery={updateQuery}
+              searchUser={searchUser}
+              loading={loading}
+            />
+          )}
+          {isProfileOpen && displayUser.name}
+          {isGroupOpen && (
+            <Text fontSize="25" textAlign="center">
+              Create a new Group
+            </Text>
+          )}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody className="custom-scrollbar">
-          {loading && <CustomSkeleton number={1} lines={2} />}
-          {searchResult.length === 0 && !loading && (
-            <Text fontWeight="300" fontSize="18px" textAlign="center">
-              {message.length === 0
-                ? "Search for your friends here!!"
-                : message}
-            </Text>
+          {isSearchOpen && (
+            <SearchResult
+              loading={loading}
+              searchResult={searchResult}
+              createChat={createChat}
+              message={message}
+            />
           )}
-          <VStack spacing={"10px"}>
-            {searchResult.map((item, ind) => (
-              <ProfileCards key={ind} user={item} createChat={createChat} />
-            ))}
-          </VStack>
+          {isProfileOpen && {}}
+          {isGroupOpen && (
+            <CreateGroup
+              loading={loading}
+              searchResult={searchResult}
+              createChat={createChat}
+              message={message}
+              updateQuery={updateQuery}
+              searchUser={searchUser}
+              setLoading={setLoading}
+            />
+          )}
         </ModalBody>
         <ModalFooter></ModalFooter>
       </ModalContent>
@@ -143,4 +150,4 @@ const SearchModal = ({ createChat }) => {
   );
 };
 
-export default SearchModal;
+export default CustomModal;
