@@ -12,7 +12,10 @@ const SearchResult = ({
   addUser,
 }) => {
   return (
-    <>
+    <div
+      className="custom-scrollbar-search"
+      style={{ width: "100%", maxHeight: "400px", overflowY: "scroll" }}
+    >
       {loading && <CustomSkeleton number={1} lines={2} />}
       {searchResult.length === 0 && !loading && (
         <Text fontWeight="300" fontSize="18px" textAlign="center">
@@ -21,7 +24,7 @@ const SearchResult = ({
             : message}
         </Text>
       )}
-      <VStack width="100%" maxHeight="350px" spacing={"15px"}>
+      <VStack spacing={"15px"}>
         {searchResult.slice(0, 10).map((item, ind) => {
           if (!item) return null;
           return (
@@ -33,7 +36,7 @@ const SearchResult = ({
           );
         })}
       </VStack>
-    </>
+    </div>
   );
 };
 

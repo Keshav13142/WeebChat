@@ -1,6 +1,7 @@
-import { Avatar, Box, Text } from "@chakra-ui/react";
+import { Avatar, Badge, Box, Flex, Tag, Text } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
+import { findSender } from "../../utils/chatUtils";
 
 const ChatProfile = ({ chat }) => {
   const {
@@ -19,10 +20,7 @@ const ChatProfile = ({ chat }) => {
   const [sender, setSender] = useState({});
 
   useEffect(() => {
-    if (chat?.users?.[1]?.name === user?.name) {
-      setSender(chat?.users?.[0]);
-      return;
-    } else setSender(chat?.users?.[1]);
+    setSender(findSender(chat, user));
     //eslint-disable-next-line
   }, [chat]);
 
@@ -59,9 +57,19 @@ const ChatProfile = ({ chat }) => {
           gap: "3px",
         }}
       >
-        <Text fontSize={18}>
+        <Flex fontSize={18}>
           {chat?.isGroupChat ? chat?.chatName : sender.name}
-        </Text>
+          {chat?.isGroupChat && (
+            <Tag
+              size="sm"
+              marginLeft="5px"
+              variant="outline"
+              colorScheme="green"
+            >
+              Group
+            </Tag>
+          )}
+        </Flex>
         <Text fontSize="15px" fontWeight="200">
           {selectedChat?.latestMessage || "Start a chat"}
         </Text>

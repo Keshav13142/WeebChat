@@ -1,29 +1,10 @@
-import {
-  Avatar,
-  Button,
-  Input,
-  Tag,
-  TagCloseButton,
-  TagLabel,
-  Text,
-  useToast,
-  VStack,
-  Wrap,
-} from "@chakra-ui/react";
+import { Input, Text, useToast } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
-import SearchInput from "../search/SearchInput";
-import SearchResult from "../search/SearchResult";
+import { findSender } from "../../utils/chatUtils";
+import SelectUsers from "../SelectUsers";
 
-const CreateGroup = ({
-  // searchUser,
-  message,
-  // query,
-  loading,
-  // updateQuery,
-  setLoading,
-  // searchResult,
-}) => {
+const CreateGroup = ({ message, loading, setLoading }) => {
   const {
     // eslint-disable-next-line
     user,
@@ -44,8 +25,6 @@ const CreateGroup = ({
     chatAvatar: "",
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
-
   const toast = useToast();
 
   const showToast = (title, status, position, desc = "") => {
@@ -58,15 +37,14 @@ const CreateGroup = ({
       isClosable: true,
     });
   };
-  const [selectedId, setselectedId] = useState([]);
 
-  const [selectedUsers, setselectedUsers] = useState([]);
+  const [selectedId, setselectedId] = useState([]);
 
   const [userList, setUserList] = useState(
     Array.isArray(chats) &&
       chats
-        ?.slice(0, 5)
-        .map((item) => (!item.isGroupChat ? item.users[1] : null))
+        ?.slice(0, 10)
+        .map((item) => (!item.isGroupChat ? findSender(item, user) : null))
   );
 
   const getBase64 = (e) => {
@@ -85,16 +63,6 @@ const CreateGroup = ({
     setLoading(false);
   };
 
-  // const searchUser = () => {};
-
-  const addUser = (e) => {
-    const user = JSON.parse(e.currentTarget.value);
-    if (!selectedUsers.find((item) => user._id === item._id)) {
-      setselectedId([...selectedId, user._id]);
-      setselectedUsers([...selectedUsers, user]);
-    }
-  };
-
   const createGroup = async () => {
     if (group.chatName.length === 0) {
       showToast("Please enter a group name", "warning", "top");
@@ -103,12 +71,15 @@ const CreateGroup = ({
     if (selectedId.length < 2) {
       showToast(
         "Minimum 2 members needed!!",
-        "warning",
+        "info",
         "top",
-        "Go get some friends 😢!"
+        "You lonely?? 😂!"
       );
       return;
     }
+
+    setLoading(true);
+
     const response = await fetch("/api/group", {
       method: "post",
       headers: new Headers({
@@ -132,36 +103,8 @@ const CreateGroup = ({
         isClosable: true,
       });
     }
-  };
 
-  const removeUsers = (e) => {
-    const id = e.currentTarget.value;
-    setselectedUsers((prev) => {
-      return prev.filter((item) => id !== item._id);
-    });
-    setselectedId((prev) => {
-      return prev.filter((item) => id !== item);
-    });
-  };
-
-  const updateSearch = (e) => {
-    const key = e.currentTarget.value.toLowerCase();
-
-    setSearchQuery(key);
-    if (key.trim() === "") {
-      setUserList(chats?.slice(0, 5).map((item) => item.users[1]));
-      return;
-    }
-    setUserList(
-      chats?.map((item) => {
-        if (
-          item.users[1].name.toLowerCase().includes(key) ||
-          item.users[1].email.includes(key)
-        )
-          return item.users[1];
-        return null;
-      })
-    );
+    setLoading(false);
   };
 
   return (
@@ -189,39 +132,16 @@ const CreateGroup = ({
           onChange={getBase64.bind(this)}
         />
       </div>
-      <VStack marginTop="10px" spacing="10px">
-        <Wrap>
-          {selectedUsers.map((user, ind) => (
-            <Tag key={ind} variant="solid" borderRadius="full" padding="5px">
-              <Avatar mr="5px" src={user.pic} size="xs" name={user.name} />
-              <TagLabel>{user.name}</TagLabel>
-              <TagCloseButton value={user._id} onClick={removeUsers} />
-            </Tag>
-          ))}
-        </Wrap>
-        <SearchInput
-          query={searchQuery}
-          updateQuery={updateSearch}
-          searchUser={updateSearch}
-          loading={loading}
-        />
-        <Button
-          isLoading={loading}
-          width="full"
-          colorScheme="blue"
-          stype="submit"
-          onClick={createGroup}
-        >
-          Create Group
-        </Button>
-        <SearchResult
-          label=" "
-          loading={loading}
-          searchResult={userList}
-          addUser={addUser}
-          message={message}
-        />
-      </VStack>
+
+      <SelectUsers
+        message={message}
+        loading={loading}
+        createGroup={createGroup}
+        selectedId={selectedId}
+        setselectedId={setselectedId}
+        userList={userList}
+        setUserList={setUserList}
+      />
     </>
   );
 };

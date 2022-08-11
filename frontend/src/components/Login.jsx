@@ -33,6 +33,10 @@ const Login = () => {
     setuser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const headers = {
+    "Content-type": "application/json",
+  };
+
   const login = async (e) => {
     if (user.email === "" || user.password === "") {
       showToast(
@@ -51,13 +55,30 @@ const Login = () => {
     }
     setLoading(true);
 
-    const headers = {
-      "Content-type": "application/json",
-    };
-
     const data = await fetch("/api/user/login", {
       method: "post",
       body: JSON.stringify(user),
+      headers: new Headers(headers),
+    });
+
+    const response = await data.json();
+
+    setLoading(false);
+
+    if (data.ok) {
+      showToast("Login successful", "success", "Happy to see you!!");
+      setUser(response);
+      localStorage.setItem("user", JSON.stringify(response));
+      navigate("/chats");
+    } else {
+      showToast(response.error, "error");
+    }
+  };
+
+  const guestLogin = async (guest) => {
+    const data = await fetch("/api/user/login", {
+      method: "post",
+      body: JSON.stringify(guest),
       headers: new Headers(headers),
     });
 
@@ -97,14 +118,16 @@ const Login = () => {
         Login
       </Button>
       <Button
+        isLoading={loading}
         type="button"
         name="guest"
         width="full"
         colorScheme={"orange"}
-        stype="submit"
-        onClick={() => setuser({ email: "guest@gmail.com", password: "guest" })}
+        onClick={() =>
+          guestLogin({ email: "guest@gmail.com", password: "guest" })
+        }
       >
-        Get guest credentials (Try the app out!!🚀)
+        Try the app out as a Guest!!🚀
       </Button>
     </VStack>
   );

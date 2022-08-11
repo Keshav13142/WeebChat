@@ -49,20 +49,24 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  background-color: #12161f;
+  width: 4px;
+  background-color: none;
   border-radius: 20px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgb(19, 47, 52);
+  background-color: rgb(50, 39, 63);
   border-radius: 20px;
 }
 
 .custom-scrollbar-search::-webkit-scrollbar {
-  width: 6px;
-  background-color: #2f3136;
+  width: 4px;
+  background-color: none;
   border-radius: 20px;
+}
+
+.custom-scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 .custom-scrollbar-search::-webkit-scrollbar-thumb {

@@ -51,7 +51,7 @@ const MyChats = () => {
         </Button>
       </Box>
       <Box height="100%" width="100%">
-        {chatLoading && <CustomSkeleton lines={4} number={4} />}
+        {chatLoading && <CustomSkeleton lines={4} number={2} />}
         {chats.length === 0 && !chatLoading ? (
           <>
             <Text marginTop="13rem" textAlign="center" fontSize="16">

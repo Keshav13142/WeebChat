@@ -106,7 +106,7 @@ const CustomModal = ({ createChat }) => {
       }}
     >
       <ModalOverlay />
-      <ModalContent height="fit-content">
+      <ModalContent>
         <ModalHeader height="fit-content">
           {isSearchOpen && (
             <SearchInput
@@ -123,9 +123,7 @@ const CustomModal = ({ createChat }) => {
               fontSize="25"
               textAlign="center"
             >
-              {profileDetails.isGroupChat
-                ? profileDetails.chatName
-                : profileDetails.users?.[1].name}
+              {profileDetails.isGroupChat ? profileDetails.chatName : "Profile"}
             </Text>
           )}
           {isGroupOpen && (
@@ -135,7 +133,7 @@ const CustomModal = ({ createChat }) => {
           )}
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody className="custom-scrollbar-search">
+        <ModalBody overflowY="scroll" className="custom-scrollbar-search">
           {isSearchOpen && (
             <SearchResult
               loading={loading}

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { VscInfo } from "react-icons/vsc";
 import { Context } from "../../Context/ContextProvider";
+import { findSender } from "../../utils/chatUtils";
 
 const ChatBox = () => {
   const {
@@ -22,10 +23,7 @@ const ChatBox = () => {
   const [sender, setSender] = useState({});
 
   useEffect(() => {
-    if (selectedChat?.users?.[1]?.name === user.name) {
-      setSender(selectedChat?.users?.[0]);
-      return;
-    } else setSender(selectedChat?.users?.[1]);
+    setSender(findSender(selectedChat, user));
     //eslint-disable-next-line
   }, [selectedChat.users]);
   return (

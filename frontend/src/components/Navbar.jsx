@@ -117,7 +117,7 @@ const Navbar = () => {
                   width={["150px", "200px"]}
                   rightIcon={<CgProfile />}
                   onClick={() => {
-                    setProfileDetails({ users: [null, user] });
+                    setProfileDetails(user);
                     setProfileOpen(true);
                   }}
                 >

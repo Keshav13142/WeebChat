@@ -4,12 +4,13 @@ import { CgSearch } from "react-icons/cg";
 import { Context } from "../../Context/ContextProvider";
 
 const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
-  const { isGroupOpen } = useContext(Context);
+  const { isGroupOpen, isProfileOpen } = useContext(Context);
   return (
     <form
-      onSubmit={isGroupOpen ? (e) => e.preventDefault() : searchUser}
+      onSubmit={
+        isGroupOpen || isProfileOpen ? (e) => e.preventDefault() : searchUser
+      }
       style={{
-        marginTop: isGroupOpen ? "" : "30px",
         width: "100%",
         height: "fit-content",
       }}
@@ -21,7 +22,7 @@ const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
           gap: "10px",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: isGroupOpen ? "10px" : "30px",
+          marginTop: isGroupOpen || isProfileOpen ? "5px" : "30px",
         }}
       >
         <Input
@@ -29,15 +30,16 @@ const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
           placeholder="Name or email"
           value={query}
         />
-        {!isGroupOpen && (
-          <IconButton
-            type="submit"
-            isLoading={loading}
-            icon={<CgSearch />}
-            size="md"
-            onClick={searchUser}
-          />
-        )}
+        {!isGroupOpen ||
+          (!isProfileOpen && (
+            <IconButton
+              type="submit"
+              isLoading={loading}
+              icon={<CgSearch />}
+              size="md"
+              onClick={searchUser}
+            />
+          ))}
       </div>
     </form>
   );
