@@ -18,7 +18,7 @@ const ProfileCards = ({ user, createChat }) => {
       onClick={createChat}
       borderBottom="1px solid #434455"
     >
-      <Avatar marginLeft="5px" boxSize="10" src={user.pic} name={user.name} />
+      <Avatar marginLeft="5px" size="sm" src={user.pic} name={user.name} />
       <div
         style={{
           display: "flex",
@@ -28,8 +28,8 @@ const ProfileCards = ({ user, createChat }) => {
           gap: "3px",
         }}
       >
-        <Text fontSize={18}>{user.name}</Text>
-        <Text fontSize="15px" fontWeight="200">
+        <Text fontSize={16}>{user.name}</Text>
+        <Text fontSize="14px" fontWeight="200">
           {user.email}
         </Text>
       </div>

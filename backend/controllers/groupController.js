@@ -29,8 +29,16 @@ const createGroup = asyncHandler(async (req, res) => {
 
 const renameGroup = asyncHandler(async (req, res) => {
   const { chatId, chatName } = req.body;
-  const chat = await Chat.findByIdAndUpdate(chatId, { chatName: chatName });
-  if (chat) res.status(200).json({ chatName: chatName });
+  const chat = await Chat.findByIdAndUpdate(
+    chatId,
+    { chatName: chatName },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password")
+    .populate("latestMessage");
+  if (chat) res.status(200).json(chat);
+  else throw new Error("Chat not found!!!");
 });
 
 const leaveGroup = asyncHandler(async (req, res) => {

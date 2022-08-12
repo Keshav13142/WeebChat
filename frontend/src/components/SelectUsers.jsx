@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  Flex,
   Tag,
   TagCloseButton,
   TagLabel,
@@ -8,6 +9,8 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
+import { HiUserAdd } from "react-icons/hi";
+import { TiCancel } from "react-icons/ti";
 import { Context } from "../Context/ContextProvider";
 import { findSender } from "../utils/chatUtils";
 import SearchInput from "./search/SearchInput";
@@ -24,17 +27,12 @@ const SelectUsers = ({
   setUserList,
 }) => {
   const {
-    // eslint-disable-next-line
     user,
-    // setChats,
     chats,
-    // setSelectedChat,
-    // isSearchOpen,
-    // setSearchOpen,
-    // isProfileOpen,
-    // setProfileOpen,
     isCreateOpen,
     profileDetails,
+    showAddUsers,
+    setShowAddUsers,
   } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -87,13 +85,15 @@ const SelectUsers = ({
                 !item.isGroupChat ? findSender(item, user) : null
               )
           )
-        : chats?.map((item) =>
-            !item.isGroupChat &&
-            !profileDetails.users.find(
-              (u) => u._id === findSender(item, user)._id
+        : setUserList(
+            chats?.map((item) =>
+              !item.isGroupChat &&
+              !profileDetails.users.find(
+                (u) => u._id === findSender(item, user)._id
+              )
+                ? findSender(item, user)
+                : null
             )
-              ? findSender(item, user)
-              : null
           );
       return;
     }
@@ -111,13 +111,15 @@ const SelectUsers = ({
           })
         : chats?.map((item) => {
             if (
+              (findSender(item, user).name.toLowerCase().includes(key) ||
+                findSender(item, user).email.toLowerCase().includes(key)) &&
               !item.isGroupChat &&
               !profileDetails.users.find(
                 (u) => u._id === findSender(item, user)._id
               )
-            )
+            ) {
               return findSender(item, user);
-            else {
+            } else {
               return null;
             }
           })
@@ -141,15 +143,30 @@ const SelectUsers = ({
         searchUser={updateSearch}
         loading={loading}
       />
-      <Button
-        isLoading={loading}
-        width="full"
-        colorScheme="green"
-        stype="submit"
-        onClick={createGroup || addUsers}
-      >
-        {isCreateOpen ? "Create group" : "Add users"}
-      </Button>
+      <Flex width="100%" justifyContent="center" alignItems="center" gap="10px">
+        <Button
+          size="sm"
+          width="50%"
+          isLoading={loading}
+          colorScheme="green"
+          stype="submit"
+          onClick={createGroup || addUsers}
+          rightIcon={showAddUsers && <HiUserAdd />}
+        >
+          {isCreateOpen ? "Create group" : "Add users"}
+        </Button>
+        {showAddUsers && (
+          <Button
+            size="sm"
+            width="50%"
+            colorScheme="red"
+            rightIcon={<TiCancel />}
+            onClick={() => setShowAddUsers(false)}
+          >
+            Cancel
+          </Button>
+        )}
+      </Flex>
       <SearchResult
         label=" "
         loading={loading}

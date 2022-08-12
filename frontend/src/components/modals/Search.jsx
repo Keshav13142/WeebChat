@@ -43,7 +43,7 @@ const Search = ({ createChat }) => {
 
     setLoading(true);
 
-    const data = await fetch(`/api/user?search=${query}`, {
+    const response = await fetch(`/api/user?search=${query}`, {
       method: "get",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -53,14 +53,13 @@ const Search = ({ createChat }) => {
 
     setLoading(false);
 
-    if (data.ok) {
-      const response = await data.json();
-      if (response.length === 0) {
+    if (response.ok) {
+      const data = await response.json();
+      if (data.length === 0) {
         setMessage("No matches found 😶");
         return;
       }
-
-      setSearchResult(response);
+      setSearchResult(data);
     } else {
       toast({
         title: "Could not connect!!",

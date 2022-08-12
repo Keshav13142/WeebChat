@@ -15,7 +15,9 @@ const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
         height: "fit-content",
       }}
     >
-      {isCreateOpen && <Text fontSize="sm">Search users</Text>}
+      {(isCreateOpen || isProfileOpen) && (
+        <Text fontSize="sm">Search users</Text>
+      )}
       <div
         style={{
           display: "flex",

@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { CgUserRemove } from "react-icons/cg";
+import { GiExitDoor } from "react-icons/gi";
+import { HiUserAdd } from "react-icons/hi";
 import { Context } from "../../Context/ContextProvider";
 import { findSender } from "../../utils/chatUtils";
 import SelectUsers from "../SelectUsers";
@@ -23,6 +25,8 @@ const GroupDetails = () => {
     setChats,
     user,
     setProfileOpen,
+    showAddUsers,
+    setShowAddUsers,
   } = useContext(Context);
 
   const toast = useToast();
@@ -157,9 +161,6 @@ const GroupDetails = () => {
 
   return (
     <>
-      <Text textAlign="center" fontSize="18">
-        Members
-      </Text>
       {profileDetails?.users?.map((item) => {
         return (
           <Box
@@ -169,8 +170,8 @@ const GroupDetails = () => {
             alignItems="center"
             gap="3"
           >
-            <Flex>
-              <Avatar src={item.pic} name={item.name} />
+            <Flex alignItems="center">
+              <Avatar size="sm" src={item.pic} name={item.name} />
               <Box ml="3">
                 <Text fontWeight="bold">
                   {item.name}
@@ -202,7 +203,7 @@ const GroupDetails = () => {
           </Box>
         );
       })}
-      {profileDetails?.groupAdmin?._id === user._id && (
+      {showAddUsers && profileDetails?.groupAdmin?._id === user._id && (
         <SelectUsers
           message=""
           loading={loading}
@@ -213,16 +214,35 @@ const GroupDetails = () => {
           setUserList={setUserList}
         />
       )}
-      <Button
-        isLoading={loading}
-        bgColor="red.500"
-        width="50%"
-        alignSelf="center"
-        marginTop="20px"
-        onClick={leaveGroup}
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        gap="10px"
+        marginTop="1rem"
       >
-        Leave Group
-      </Button>
+        {!showAddUsers && user._id === profileDetails?.groupAdmin?._id && (
+          <Button
+            size="sm"
+            colorScheme="blue"
+            alignSelf="center"
+            onClick={() => {
+              setShowAddUsers(true);
+            }}
+            rightIcon={<HiUserAdd />}
+          >
+            Add Users
+          </Button>
+        )}
+        <Button
+          size="sm"
+          isLoading={loading}
+          bgColor="red.500"
+          rightIcon={<GiExitDoor />}
+          onClick={leaveGroup}
+        >
+          Leave Group
+        </Button>
+      </Flex>
     </>
   );
 };

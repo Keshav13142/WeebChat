@@ -72,7 +72,10 @@ const searchUsers = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-  await Session.deleteMany({ user_id: req.user.id });
+  await Session.findOneAndDelete(
+    { user_id: req.user.id },
+    { sort: { createdAt: -1 } }
+  );
   res.status(200).json({ message: "Successfully logged out" });
 });
 

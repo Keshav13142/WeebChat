@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("dotenv").config();
 const chats = require("./data/dummydata");
 const getConnection = require("./utils/db");
@@ -10,6 +11,7 @@ app.use(
     limit: "5mb",
   })
 );
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Hello");

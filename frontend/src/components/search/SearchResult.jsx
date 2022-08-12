@@ -17,7 +17,7 @@ const SearchResult = ({
       style={{ width: "100%", maxHeight: "400px", overflowY: "scroll" }}
     >
       {loading && <CustomSkeleton number={1} lines={2} />}
-      {searchResult.length === 0 && !loading && (
+      {searchResult?.length === 0 && !loading && (
         <Text fontWeight="300" fontSize="18px" textAlign="center">
           {message.length === 0
             ? label || "Search for your friends here!!"
@@ -25,7 +25,7 @@ const SearchResult = ({
         </Text>
       )}
       <VStack spacing={"15px"}>
-        {searchResult.slice(0, 10).map((item, ind) => {
+        {searchResult?.slice(0, 10).map((item, ind) => {
           if (!item) return null;
           return (
             <ProfileCards

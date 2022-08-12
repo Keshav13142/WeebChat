@@ -19,7 +19,7 @@ const Login = () => {
       title: title,
       description: desc,
       status: status,
-      duration: 3000,
+      duration: 2000,
       isClosable: true,
     });
   };
@@ -39,11 +39,7 @@ const Login = () => {
 
   const login = async (e) => {
     if (user.email === "" || user.password === "") {
-      showToast(
-        "Email or password cannot be empty",
-        "warning",
-        "Please check your details !!"
-      );
+      showToast("Email or password can't be empty", "warning");
       return;
     }
 
@@ -88,7 +84,7 @@ const Login = () => {
     setLoading(false);
 
     if (data.ok) {
-      showToast("Login successful", "success", "Happy to see you!!");
+      showToast("Login successful", "success");
       setUser(response);
       localStorage.setItem("user", JSON.stringify(response));
       navigate("/chats");
@@ -123,7 +119,7 @@ const Login = () => {
         type="button"
         name="guest"
         width="full"
-        colorScheme={"orange"}
+        colorScheme="purple"
         onClick={() =>
           guestLogin({ email: "guest@gmail.com", password: "guest" })
         }

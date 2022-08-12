@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuList,
   Text,
+  useToast,
   Wrap,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
@@ -33,12 +34,20 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
+  const toast = useToast();
+
   const logout = async () => {
     localStorage.removeItem("user");
 
     setUser(null);
     setChats([]);
     navigate("/");
+
+    toast({
+      title: "Logged out successfully!!",
+      status: "success",
+      duration: 3000,
+    });
 
     await fetch("/api/user/logout", {
       method: "post",

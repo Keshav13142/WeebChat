@@ -22,6 +22,8 @@ const ContextProvider = ({ children }) => {
 
   const [isProfileOpen, setProfileOpen] = useState(false);
 
+  const [showAddUsers, setShowAddUsers] = useState(false);
+
   useEffect(() => {
     let userInfo;
     if ((userInfo = JSON.parse(localStorage.getItem("user")))) {
@@ -51,6 +53,8 @@ const ContextProvider = ({ children }) => {
         setCreateOpen,
         chatLoading,
         setChatLoading,
+        showAddUsers,
+        setShowAddUsers,
       }}
     >
       {children}
