@@ -76,6 +76,7 @@ const Login = () => {
   };
 
   const guestLogin = async (guest) => {
+    setLoading(true);
     const data = await fetch("/api/user/login", {
       method: "post",
       body: JSON.stringify(guest),

@@ -44,6 +44,11 @@ const Profile = () => {
       )
   );
 
+  const headers = {
+    "Content-type": "application/json",
+    Authorization: "Bearer " + user.token,
+  };
+
   useEffect(() => {
     if (profileDetails._id === user._id) {
       setProfile(user);
@@ -60,11 +65,6 @@ const Profile = () => {
     setLoading(true);
 
     const userId = e.currentTarget.value;
-
-    const headers = {
-      "Content-type": "application/json",
-      Authorization: "Bearer " + user.token,
-    };
 
     const response = await fetch("/api/group/remove", {
       method: "put",
@@ -105,11 +105,6 @@ const Profile = () => {
       return;
     }
 
-    const headers = {
-      "Content-type": "application/json",
-      Authorization: "Bearer " + user.token,
-    };
-
     const response = await fetch("/api/group/leave", {
       method: "put",
       body: JSON.stringify({ chatId: profileDetails._id }),
@@ -120,13 +115,55 @@ const Profile = () => {
       const data = await response.json();
       setChats([...chats.filter((item) => item._id !== data._id)]);
       setProfileOpen(false);
+    } else {
+      toast({
+        title: "Something went wrong",
+        description: "Unable to perform action....",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
     }
 
     setLoading(false);
   };
 
   const addUsers = async () => {
-    console.log(selectedId);
+    if (selectedId.length === 0) {
+      toast({
+        title: "Select atleast 1 user",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    }
+    setLoading(true);
+    const response = await fetch("/api/group/adduser", {
+      method: "put",
+      body: JSON.stringify({ chatId: profileDetails._id, userId: selectedId }),
+      headers: new Headers(headers),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setChats([...chats.filter((item) => item._id !== data._id), data]);
+      setProfileDetails(data);
+      setSelectedChat(data);
+    } else {
+      toast({
+        title: "Something went wrong",
+        description: "Unable to perform action....",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+    setselectedId([]);
+    setLoading(false);
   };
 
   return (
@@ -139,16 +176,22 @@ const Profile = () => {
         flexDirection="column"
       >
         {!profileDetails.isGroupChat ? (
-          <Flex>
-            <Avatar src={profile.pic} name={profile.name} />
+          <Flex
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            gap="10px"
+          >
+            <Avatar size="xl" src={profile.pic} name={profile.name} />
             <Box ml="3">
-              <Text fontWeight="bold">
+              <Text fontSize="20px">
+                <span style={{ fontWeight: "bold" }}>Name</span> :{" "}
                 {profile.name}
-                <Badge ml="1" colorScheme="cyan" variant="outline">
-                  User
-                </Badge>
               </Text>
-              <Text>{profile.email}</Text>
+              <Text fontSize="21px">
+                <span style={{ fontWeight: "bold" }}>Email</span> :{" "}
+                {profile.email}
+              </Text>
             </Box>
           </Flex>
         ) : (
@@ -170,21 +213,15 @@ const Profile = () => {
                     <Box ml="3">
                       <Text fontWeight="bold">
                         {item.name}
+                        {item._id === user._id && (
+                          <Badge ml="1" colorScheme="green" variant="outline">
+                            You
+                          </Badge>
+                        )}
                         {item._id === profileDetails.groupAdmin._id && (
-                          <>
-                            <Badge ml="1" colorScheme="red" variant="solid">
-                              Admin
-                            </Badge>
-                            {item._id === user._id && (
-                              <Badge
-                                ml="1"
-                                colorScheme="green"
-                                variant="outline"
-                              >
-                                You
-                              </Badge>
-                            )}
-                          </>
+                          <Badge ml="1" colorScheme="red" variant="solid">
+                            Admin
+                          </Badge>
                         )}
                       </Text>
                       <Text fontSize="sm">{item.email}</Text>

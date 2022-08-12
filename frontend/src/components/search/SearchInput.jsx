@@ -4,7 +4,7 @@ import { CgSearch } from "react-icons/cg";
 import { Context } from "../../Context/ContextProvider";
 
 const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
-  const { isGroupOpen, isProfileOpen } = useContext(Context);
+  const { isGroupOpen, isProfileOpen, isSearchOpen } = useContext(Context);
   return (
     <form
       onSubmit={
@@ -30,16 +30,15 @@ const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
           placeholder="Name or email"
           value={query}
         />
-        {!isGroupOpen ||
-          (!isProfileOpen && (
-            <IconButton
-              type="submit"
-              isLoading={loading}
-              icon={<CgSearch />}
-              size="md"
-              onClick={searchUser}
-            />
-          ))}
+        {isSearchOpen && (
+          <IconButton
+            type="submit"
+            isLoading={loading}
+            icon={<CgSearch />}
+            size="md"
+            onClick={searchUser}
+          />
+        )}
       </div>
     </form>
   );

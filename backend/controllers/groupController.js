@@ -64,10 +64,15 @@ const removeUser = asyncHandler(async (req, res) => {
 });
 
 const addUserToGroup = asyncHandler(async (req, res) => {
-  const { chatId, user } = req.body;
-  var chat = await Chat.findByIdAndUpdate(chatId, {
-    $addToSet: { users: user },
-  });
+  const { chatId, userId } = req.body;
+
+  var chat = await Chat.findByIdAndUpdate(
+    chatId,
+    {
+      $addToSet: { users: userId },
+    },
+    { new: true }
+  );
 
   chat = await Chat.findById(chatId)
     .populate("users", "-password")

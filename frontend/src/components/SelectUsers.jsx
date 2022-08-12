@@ -7,7 +7,7 @@ import {
   VStack,
   Wrap,
 } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../Context/ContextProvider";
 import { findSender } from "../utils/chatUtils";
 import SearchInput from "./search/SearchInput";
@@ -39,6 +39,21 @@ const SelectUsers = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   const [selectedUsers, setselectedUsers] = useState([]);
+
+  useEffect(() => {
+    setUserList(
+      chats?.map((item) =>
+        !item.isGroupChat &&
+        !profileDetails?.users?.find(
+          (u) => u._id === findSender(item, user)._id
+        )
+          ? findSender(item, user)
+          : null
+      )
+    );
+    setselectedUsers([]);
+    //eslint-disable-next-line
+  }, [profileDetails]);
 
   const addUser = (e) => {
     const user = JSON.parse(e.currentTarget.value);
