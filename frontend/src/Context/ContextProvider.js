@@ -18,7 +18,7 @@ const ContextProvider = ({ children }) => {
 
   const [chatLoading, setChatLoading] = useState(false);
 
-  const [isGroupOpen, setGroupOpen] = useState(false);
+  const [isCreateOpen, setCreateOpen] = useState(false);
 
   const [isProfileOpen, setProfileOpen] = useState(false);
 
@@ -47,8 +47,8 @@ const ContextProvider = ({ children }) => {
         setSelectedChat,
         profileDetails,
         setProfileDetails,
-        isGroupOpen,
-        setGroupOpen,
+        isCreateOpen,
+        setCreateOpen,
         chatLoading,
         setChatLoading,
       }}

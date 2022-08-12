@@ -1,31 +1,40 @@
-import { Input, Text, useToast } from "@chakra-ui/react";
+import {
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
 import { findSender } from "../../utils/chatUtils";
 import SelectUsers from "../SelectUsers";
 
-const CreateGroup = ({ message, loading, setLoading }) => {
+const CreateGroup = ({ createChat }) => {
   const {
-    // eslint-disable-next-line
     user,
-    setChats,
+    isCreateOpen,
+    setCreateOpen,
     chats,
     setSelectedChat,
-    // isSearchOpen,
-    // setSearchOpen,
-    // isProfileOpen,
-    // setProfileOpen,
-    // isCreateOpen,
-    setCreateOpen,
-    // profileDetails,
+    setChats,
   } = useContext(Context);
+
+  const toast = useToast();
+
+  const [message, setMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const [group, setGroup] = useState({
     chatName: "",
     chatAvatar: "",
   });
-
-  const toast = useToast();
 
   const showToast = (title, status, position, desc = "") => {
     toast({
@@ -108,41 +117,63 @@ const CreateGroup = ({ message, loading, setLoading }) => {
   };
 
   return (
-    <>
-      <div className="input_container">
-        <Text fontSize={"sm"}>Group name</Text>
-        <Input
-          name="chatName"
-          value={group.chatName}
-          onChange={(e) => {
-            setGroup({ ...group, [e.target.name]: e.target.value });
-          }}
-        />
-      </div>
-      <div className="input_container">
-        <Text marginTop="10px" fontSize={"sm"}>
-          Group icon
-        </Text>
-        <Input
-          size="xs"
-          cursor="pointer"
-          variant="outlined"
-          type="file"
-          accept="image/*"
-          onChange={getBase64.bind(this)}
-        />
-      </div>
+    <Modal
+      size={["xs", "sm"]}
+      scrollBehavior="inside"
+      isOpen={isCreateOpen}
+      onClose={() => {
+        setCreateOpen(false);
+        setMessage("");
+      }}
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader height="fit-content">
+          <Text fontSize="25" textAlign="center">
+            Create a new Group
+          </Text>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody overflowY="scroll" className="custom-scrollbar-search">
+          <>
+            <div className="input_container">
+              <Text fontSize={"sm"}>Group name</Text>
+              <Input
+                name="chatName"
+                value={group.chatName}
+                onChange={(e) => {
+                  setGroup({ ...group, [e.target.name]: e.target.value });
+                }}
+              />
+            </div>
+            <div className="input_container">
+              <Text marginTop="10px" fontSize={"sm"}>
+                Group icon
+              </Text>
+              <Input
+                size="xs"
+                cursor="pointer"
+                variant="outlined"
+                type="file"
+                accept="image/*"
+                onChange={getBase64.bind(this)}
+              />
+            </div>
 
-      <SelectUsers
-        message={message}
-        loading={loading}
-        createGroup={createGroup}
-        selectedId={selectedId}
-        setselectedId={setselectedId}
-        userList={userList}
-        setUserList={setUserList}
-      />
-    </>
+            <SelectUsers
+              message={message}
+              loading={loading}
+              createGroup={createGroup}
+              selectedId={selectedId}
+              setselectedId={setselectedId}
+              userList={userList}
+              setUserList={setUserList}
+            />
+          </>
+        </ModalBody>
+        <ModalFooter></ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

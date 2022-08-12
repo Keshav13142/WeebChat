@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Flex, Tag, Text } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Tag, Text } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
 import { findSender } from "../../utils/chatUtils";

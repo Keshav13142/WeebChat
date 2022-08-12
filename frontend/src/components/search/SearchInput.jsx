@@ -4,25 +4,25 @@ import { CgSearch } from "react-icons/cg";
 import { Context } from "../../Context/ContextProvider";
 
 const SearchInput = ({ searchUser, loading, query, updateQuery }) => {
-  const { isGroupOpen, isProfileOpen, isSearchOpen } = useContext(Context);
+  const { isCreateOpen, isProfileOpen, isSearchOpen } = useContext(Context);
   return (
     <form
       onSubmit={
-        isGroupOpen || isProfileOpen ? (e) => e.preventDefault() : searchUser
+        isCreateOpen || isProfileOpen ? (e) => e.preventDefault() : searchUser
       }
       style={{
         width: "100%",
         height: "fit-content",
       }}
     >
-      {isGroupOpen && <Text fontSize="sm">Search users</Text>}
+      {isCreateOpen && <Text fontSize="sm">Search users</Text>}
       <div
         style={{
           display: "flex",
           gap: "10px",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: isGroupOpen || isProfileOpen ? "5px" : "30px",
+          marginTop: isCreateOpen || isProfileOpen ? "5px" : "30px",
         }}
       >
         <Input

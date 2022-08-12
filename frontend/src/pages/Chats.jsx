@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import ChatBox from "../components/chats/ChatBox";
 import MyChats from "../components/chats/MyChats";
 import NoChat from "../components/chats/NoChat";
-import CustomModal from "../components/Modal";
+import CreateGroup from "../components/modals/CreateGroup";
+import Profile from "../components/modals/Profile";
+import Search from "../components/modals/Search";
 import { Context } from "../Context/ContextProvider";
 
 const Chats = () => {
@@ -107,7 +109,12 @@ const Chats = () => {
 
   return (
     <>
-      <CustomModal createChat={createChat} />
+      <CreateGroup createChat={createChat} />
+
+      <Profile />
+
+      <Search createChat={createChat} />
+
       <Container
         padding="10px"
         display="flex"

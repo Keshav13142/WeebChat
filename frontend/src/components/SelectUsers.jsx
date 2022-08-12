@@ -33,7 +33,7 @@ const SelectUsers = ({
     // setSearchOpen,
     // isProfileOpen,
     // setProfileOpen,
-    isGroupOpen,
+    isCreateOpen,
     profileDetails,
   } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -79,7 +79,7 @@ const SelectUsers = ({
     setSearchQuery(key);
 
     if (key.trim() === "") {
-      isGroupOpen
+      isCreateOpen
         ? setUserList(
             chats
               ?.slice(0, 10)
@@ -99,7 +99,7 @@ const SelectUsers = ({
     }
 
     setUserList(
-      isGroupOpen
+      isCreateOpen
         ? chats?.map((item) => {
             if (
               !item.isGroupChat &&
@@ -148,7 +148,7 @@ const SelectUsers = ({
         stype="submit"
         onClick={createGroup || addUsers}
       >
-        {isGroupOpen ? "Create group" : "Add users"}
+        {isCreateOpen ? "Create group" : "Add users"}
       </Button>
       <SearchResult
         label=" "

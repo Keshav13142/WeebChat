@@ -6,30 +6,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useToast,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import { Context } from "../Context/ContextProvider";
-import CreateGroup from "./chats/CreateGroup";
-import Profile from "./Profile";
-import SearchInput from "./search/SearchInput";
-import SearchResult from "./search/SearchResult";
+import { Context } from "../../Context/ContextProvider";
+import SearchInput from "../search/SearchInput";
+import SearchResult from "../search/SearchResult";
 
-const CustomModal = ({ createChat }) => {
-  const {
-    user,
-    isSearchOpen,
-    setSearchOpen,
-    // selectedChat,
-    // setSelectedChat,
-    // chats,
-    isProfileOpen,
-    setProfileOpen,
-    isGroupOpen,
-    setGroupOpen,
-    profileDetails,
-  } = useContext(Context);
+const Search = ({ createChat }) => {
+  const { user, isSearchOpen, setSearchOpen } = useContext(Context);
 
   const toast = useToast();
 
@@ -95,11 +80,9 @@ const CustomModal = ({ createChat }) => {
     <Modal
       size={["xs", "sm"]}
       scrollBehavior="inside"
-      isOpen={isSearchOpen || isGroupOpen || isProfileOpen}
+      isOpen={isSearchOpen}
       onClose={() => {
         setSearchOpen(false);
-        setGroupOpen(false);
-        setProfileOpen(false);
         setSearchResult([]);
         setQuery("");
         setMessage("");
@@ -108,52 +91,21 @@ const CustomModal = ({ createChat }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader height="fit-content">
-          {isSearchOpen && (
-            <SearchInput
-              query={query}
-              updateQuery={updateQuery}
-              searchUser={searchUser}
-              loading={loading}
-            />
-          )}
-          {isProfileOpen && (
-            <Text
-              rounded="full"
-              color="cyan.200"
-              fontSize="25"
-              textAlign="center"
-            >
-              {profileDetails.isGroupChat ? profileDetails.chatName : "Profile"}
-            </Text>
-          )}
-          {isGroupOpen && (
-            <Text fontSize="25" textAlign="center">
-              Create a new Group
-            </Text>
-          )}
+          <SearchInput
+            query={query}
+            updateQuery={updateQuery}
+            searchUser={searchUser}
+            loading={loading}
+          />
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody overflowY="scroll" className="custom-scrollbar-search">
-          {isSearchOpen && (
-            <SearchResult
-              loading={loading}
-              searchResult={searchResult}
-              createChat={createChat}
-              message={message}
-            />
-          )}
-          {isProfileOpen && <Profile />}
-          {isGroupOpen && (
-            <CreateGroup
-              loading={loading}
-              searchResult={searchResult}
-              createChat={createChat}
-              message={message}
-              updateQuery={updateQuery}
-              searchUser={searchUser}
-              setLoading={setLoading}
-            />
-          )}
+          <SearchResult
+            loading={loading}
+            searchResult={searchResult}
+            createChat={createChat}
+            message={message}
+          />
         </ModalBody>
         <ModalFooter></ModalFooter>
       </ModalContent>
@@ -161,4 +113,4 @@ const CustomModal = ({ createChat }) => {
   );
 };
 
-export default CustomModal;
+export default Search;

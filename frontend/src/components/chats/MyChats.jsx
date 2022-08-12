@@ -10,8 +10,8 @@ const MyChats = () => {
     chats,
     selectedChat,
     chatLoading,
-    // isGroupOpen,
-    setGroupOpen,
+    // isCreateOpen,
+    setCreateOpen,
     // setChats,
     // setUser,
     // isSearchOpen,
@@ -45,7 +45,7 @@ const MyChats = () => {
         <Button
           size={["sm"]}
           rightIcon={<RiAddFill />}
-          onClick={() => setGroupOpen(true)}
+          onClick={() => setCreateOpen(true)}
         >
           Group
         </Button>
