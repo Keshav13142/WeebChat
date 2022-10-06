@@ -1,110 +1,168 @@
-import { Avatar, Box, Divider, Heading, IconButton } from "@chakra-ui/react";
+import {
+  Flex,
+  IconButton,
+  Input,
+  Spinner,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
-import { MdOutlineArrowBackIosNew } from "react-icons/md";
-import { VscInfo } from "react-icons/vsc";
+import { AiOutlineSend } from "react-icons/ai";
 import { Context } from "../../Context/ContextProvider";
-import { findSender } from "../../utils/chatUtils";
-
 const ChatBox = () => {
   const {
-    // chats,
-    // setChats,
+    chats,
     user,
+    selectedChat,
+    chatLoading,
+    // isCreateOpen,
+    setCreateOpen,
+    // setChats,
     // setUser,
     // isSearchOpen,
     // setSearchOpen,
     // isProfileOpen,
-    setProfileOpen,
-    selectedChat,
-    setProfileDetails,
-    setSelectedChat,
+    // setProfileOpen,
+    // setSelectedChat,
   } = useContext(Context);
 
-  const [sender, setSender] = useState({});
+  const [messagesLoading, setMessagesLoading] = useState(false);
+
+  const [sendLoading, setSendLoading] = useState(false);
+
+  const [allMessages, setAllMessages] = useState([]);
+
+  const [message, setMessage] = useState("");
+
+  const toast = useToast();
 
   useEffect(() => {
-    setSender(findSender(selectedChat, user));
+    fetchMessages();
+    console.log(allMessages);
     //eslint-disable-next-line
-  }, [selectedChat.users]);
+  }, [selectedChat]);
+
+  const fetchMessages = async () => {
+    setMessagesLoading(true);
+
+    const response = await fetch(`/api/message/${selectedChat._id}`, {
+      method: "get",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + user.token,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setAllMessages(data);
+    } else {
+      toast({
+        title: "Unable to fetch messages!!",
+        description: "Something went wrong 😥",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    setMessagesLoading(false);
+  };
+
+  const typingHandler = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const sendMessage = async (e) => {
+    if (message.trim().length === 0) return;
+    if (e.currentTarget.name === "send" || e.key === "Enter") {
+      setSendLoading(true);
+
+      const response = await fetch(`/api/message/${selectedChat._id}`, {
+        method: "post",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + user.token,
+        }),
+        body: JSON.stringify({ content: message }),
+      });
+
+      if (response.ok) {
+        setMessage("");
+        const data = await response.json();
+        console.log(data);
+        setAllMessages([...allMessages, data]);
+      } else {
+        toast({
+          title: "Failed to send Message!!",
+          description: "Something went wrong 😥",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      setSendLoading(false);
+    }
+  };
+
   return (
-    <Box
-      backgroundColor="#12161f"
-      display={"flex"}
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="start"
-      width={{ base: "100%", md: "70%" }}
+    <Flex
+      flexGrow={1}
+      width="100%"
+      direction="column"
       gap="10px"
-      padding="10px"
-      borderRadius="10px"
+      justifyContent="center"
+      alignItems="center"
     >
-      <Box
-        height="fit-content"
-        width="100%"
-        display={"flex"}
-        justifyContent="flex-start"
-        alignItems="center"
-        gap="10px"
-      >
-        <IconButton
-          bgColor="#0f131a"
-          display="flex"
-          icon={<MdOutlineArrowBackIosNew />}
-          onClick={() => {
-            setSelectedChat(null);
-          }}
+      {messagesLoading ? (
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
         />
-        <Box
-          height="fit-content"
-          width="100%"
-          display={"flex"}
-          justifyContent="space-between"
-          alignItems="center"
-          gap="10px"
-        >
-          <Box
-            display={"flex"}
-            justifyContent="space-between"
-            alignItems="center"
-            gap="10px"
-            cursor="pointer"
-            onClick={() => {
-              setProfileDetails(selectedChat);
-              setProfileOpen(true);
-            }}
+      ) : (
+        <>
+          <Flex
+            overflowY="scroll"
+            className="custom-scrollbar"
+            borderRadius="10px"
+            flexDirection="column"
+            justifyContent="flex-end"
+            width="100%"
+            bgColor="#161b26"
+            flexGrow={1}
           >
-            <Avatar
-              boxSize="10"
-              name={
-                selectedChat?.isGroupChat
-                  ? selectedChat?.chatName
-                  : sender?.name
-              }
-              src={
-                selectedChat?.isGroupChat
-                  ? selectedChat?.chatAvatar
-                  : sender?.pic
-              }
+            {allMessages.map((message) => (
+              <Text
+                style={
+                  user._id === message.sender._id
+                    ? { position: "fixed", right: 0 }
+                    : {}
+                }
+                key={message._id}
+              >
+                {message.content}
+              </Text>
+            ))}
+          </Flex>
+          <Flex width="100%" gap="10px">
+            <Input
+              onKeyDown={sendMessage}
+              value={message}
+              onChange={typingHandler}
             />
-            <Heading fontSize="19">
-              {selectedChat?.isGroupChat
-                ? selectedChat?.chatName
-                : sender?.name}
-            </Heading>
-          </Box>
-          <IconButton
-            onClick={() => {
-              setProfileDetails(selectedChat);
-              setProfileOpen(true);
-            }}
-            background="none"
-            icon={<VscInfo />}
-          />
-        </Box>
-      </Box>
-      <Divider />
-      <Box height="100%" width="100%"></Box>
-    </Box>
+            <IconButton
+              isLoading={sendLoading}
+              name="send"
+              onClick={sendMessage}
+              bg="none"
+              icon={<AiOutlineSend />}
+            />
+          </Flex>
+        </>
+      )}
+    </Flex>
   );
 };
 

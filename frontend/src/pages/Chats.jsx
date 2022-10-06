@@ -1,7 +1,7 @@
 import { Container, useToast } from "@chakra-ui/react";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ChatBox from "../components/chats/ChatBox";
+import ChatWindow from "../components/chats/ChatWindow";
 import MyChats from "../components/chats/MyChats";
 import NoChat from "../components/chats/NoChat";
 import CreateGroup from "../components/modals/CreateGroup";
@@ -124,7 +124,7 @@ const Chats = () => {
         flexGrow="1"
       >
         <MyChats />
-        {selectedChat ? <ChatBox /> : <NoChat />}
+        {selectedChat ? <ChatWindow /> : <NoChat />}
       </Container>
     </>
   );

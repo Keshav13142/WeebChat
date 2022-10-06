@@ -45,8 +45,8 @@ const ChatProfile = ({ chat }) => {
       <Avatar
         marginLeft="5px"
         boxSize="10"
-        src={chat?.isGroupChat ? chat.chatAvatar : sender?.pic}
-        name={chat?.isGroupChat ? chat.chatName : sender?.name}
+        src={chat?.isGroupChat ? chat?.chatAvatar : sender?.pic}
+        name={chat?.isGroupChat ? chat?.chatName : sender?.name}
       />
       <div
         style={{
@@ -58,7 +58,7 @@ const ChatProfile = ({ chat }) => {
         }}
       >
         <Flex fontSize={18}>
-          {chat?.isGroupChat ? chat?.chatName : sender?.name}
+          <Text>{chat?.isGroupChat ? chat?.chatName : sender?.name}</Text>
           {chat?.isGroupChat && (
             <Tag
               size="sm"
@@ -71,7 +71,7 @@ const ChatProfile = ({ chat }) => {
           )}
         </Flex>
         <Text fontSize="15px" fontWeight="200">
-          {selectedChat?.latestMessage || "Start a chat"}
+          {chat?.latestMessage?.content || "Start a chat"}
         </Text>
       </div>
     </Box>

@@ -4,8 +4,9 @@
   "description": "Chat apllication (Building it to imporove my skills)",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server.js",
-    "react": "npm start --prefix frontend"
+    "start": "npx nodemon backend/server.js",
+    "react": "npm start --prefix frontend",
+    "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "Keshav S",

@@ -52,7 +52,7 @@ const MyChats = () => {
       </Box>
       <Box height="100%" width="100%">
         {chatLoading && <CustomSkeleton lines={4} number={2} />}
-        {chats.length === 0 && !chatLoading ? (
+        {chats?.length === 0 && !chatLoading ? (
           <>
             <Text marginTop="13rem" textAlign="center" fontSize="16">
               Conversations you have will appear here....
@@ -70,8 +70,9 @@ const MyChats = () => {
             padding="0"
             spacing={["5px", "10px"]}
           >
-            {Array.isArray(chats) &&
-              chats?.map((chat) => <ChatProfile chat={chat} key={chat._id} />)}
+            {chats?.map((chat) => (
+              <ChatProfile chat={chat} key={chat._id} />
+            ))}
           </VStack>
         )}
       </Box>
