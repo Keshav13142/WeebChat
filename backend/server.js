@@ -13,6 +13,7 @@ app.use(
     limit: "5mb",
   })
 );
+
 app.use(cors());
 
 app.use("/api/user", require("./routes/userRoutes"));
