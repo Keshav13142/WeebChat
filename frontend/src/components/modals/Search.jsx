@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
+import { BACKEND_URL } from "../../utils/helpers";
 import SearchInput from "../search/SearchInput";
 import SearchResult from "../search/SearchResult";
 
@@ -43,7 +44,7 @@ const Search = ({ createChat }) => {
 
     setLoading(true);
 
-    const response = await fetch(`/api/user?search=${query}`, {
+    const response = await fetch(`${BACKEND_URL}/api/user?search=${query}`, {
       method: "get",
       headers: new Headers({
         "Content-Type": "application/json",

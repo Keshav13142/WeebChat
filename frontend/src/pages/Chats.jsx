@@ -8,6 +8,7 @@ import CreateGroup from "../components/modals/CreateGroup";
 import Profile from "../components/modals/Profile";
 import Search from "../components/modals/Search";
 import { Context } from "../Context/ContextProvider";
+import { BACKEND_URL } from "../utils/helpers";
 
 const Chats = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Chats = () => {
   const fetchChats = async () => {
     setChatLoading(true);
 
-    const response = await fetch("/api/chat", {
+    const response = await fetch(`${BACKEND_URL}/api/chat`, {
       method: "get",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -64,7 +65,7 @@ const Chats = () => {
 
     if (!userId) return;
 
-    const response = await fetch("/api/chat", {
+    const response = await fetch(`${BACKEND_URL}/api/chat`, {
       method: "post",
       headers: new Headers({
         "Content-Type": "application/json",

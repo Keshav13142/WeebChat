@@ -20,6 +20,7 @@ import { FaCheck } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { Context } from "../../Context/ContextProvider";
 import { findSender } from "../../utils/chatUtils";
+import { BACKEND_URL } from "../../utils/helpers";
 import GroupDetails from "./GroupDetails";
 import SingleUser from "./SingleUser";
 
@@ -86,7 +87,7 @@ const Profile = () => {
 
     setLoading(true);
 
-    const response = await fetch("/api/group/rename", {
+    const response = await fetch(`${BACKEND_URL}/api/group/rename`, {
       method: "put",
       headers: new Headers({
         "Content-Type": "application/json",

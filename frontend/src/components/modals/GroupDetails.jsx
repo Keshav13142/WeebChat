@@ -14,6 +14,7 @@ import { GiExitDoor } from "react-icons/gi";
 import { HiUserAdd } from "react-icons/hi";
 import { Context } from "../../Context/ContextProvider";
 import { findSender } from "../../utils/chatUtils";
+import { BACKEND_URL } from "../../utils/helpers";
 import SelectUsers from "../SelectUsers";
 
 const GroupDetails = () => {
@@ -56,7 +57,7 @@ const GroupDetails = () => {
 
     const userId = e.currentTarget.value;
 
-    const response = await fetch("/api/group/remove", {
+    const response = await fetch(`${BACKEND_URL}/api/group/remove`, {
       method: "put",
       body: JSON.stringify({ chatId: profileDetails._id, userId: userId }),
       headers: new Headers(headers),
@@ -95,7 +96,7 @@ const GroupDetails = () => {
       return;
     }
 
-    const response = await fetch("/api/group/leave", {
+    const response = await fetch(`${BACKEND_URL}/api/group/leave`, {
       method: "put",
       body: JSON.stringify({ chatId: profileDetails._id }),
       headers: new Headers(headers),
@@ -131,7 +132,7 @@ const GroupDetails = () => {
       return;
     }
     setLoading(true);
-    const response = await fetch("/api/group/adduser", {
+    const response = await fetch(`${BACKEND_URL}/api/group/adduser`, {
       method: "put",
       body: JSON.stringify({
         chatId: profileDetails._id,

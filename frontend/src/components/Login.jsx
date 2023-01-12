@@ -2,6 +2,7 @@ import { Button, useToast, VStack } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../Context/ContextProvider";
+import { BACKEND_URL } from "../utils/helpers";
 import { loginInputs } from "../utils/inputFeilds";
 import CustomInput from "./Input";
 
@@ -51,7 +52,7 @@ const Login = () => {
     }
     setLoading(true);
 
-    const data = await fetch("/api/user/login", {
+    const data = await fetch(`${BACKEND_URL}/api/user/login`, {
       method: "post",
       body: JSON.stringify(user),
       headers: new Headers(headers),
@@ -73,7 +74,7 @@ const Login = () => {
 
   const guestLogin = async (guest) => {
     setLoading(true);
-    const data = await fetch("/api/user/login", {
+    const data = await fetch(`${BACKEND_URL}/api/user/login`, {
       method: "post",
       body: JSON.stringify(guest),
       headers: new Headers(headers),

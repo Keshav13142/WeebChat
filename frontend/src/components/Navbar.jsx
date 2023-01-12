@@ -21,6 +21,7 @@ import { GoMarkGithub } from "react-icons/go";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../Context/ContextProvider";
+import { BACKEND_URL } from "../utils/helpers";
 
 const Navbar = () => {
   const {
@@ -49,7 +50,7 @@ const Navbar = () => {
       duration: 3000,
     });
 
-    await fetch("/api/user/logout", {
+    await fetch(`${BACKEND_URL}/api/user/logout`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

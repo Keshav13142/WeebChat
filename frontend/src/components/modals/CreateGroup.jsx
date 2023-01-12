@@ -13,6 +13,7 @@ import {
 import React, { useContext, useState } from "react";
 import { Context } from "../../Context/ContextProvider";
 import { findSender } from "../../utils/chatUtils";
+import { BACKEND_URL } from "../../utils/helpers";
 import SelectUsers from "../SelectUsers";
 
 const CreateGroup = ({ createChat }) => {
@@ -89,7 +90,7 @@ const CreateGroup = ({ createChat }) => {
 
     setLoading(true);
 
-    const response = await fetch("/api/group", {
+    const response = await fetch(`${BACKEND_URL}/api/group`, {
       method: "post",
       headers: new Headers({
         "Content-Type": "application/json",

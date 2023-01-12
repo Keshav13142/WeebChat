@@ -2,6 +2,7 @@ import { Button, Input, Text, useToast, VStack } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../Context/ContextProvider";
+import { BACKEND_URL } from "../utils/helpers";
 import { signUpInputs } from "../utils/inputFeilds";
 import CustomInput from "./Input";
 
@@ -73,7 +74,7 @@ const SignUp = () => {
     const headers = {
       "Content-type": "application/json",
     };
-    const data = await fetch("/api/user/register", {
+    const data = await fetch(`${BACKEND_URL}/api/user/register`, {
       method: "post",
       body: JSON.stringify(user),
       headers: new Headers(headers),

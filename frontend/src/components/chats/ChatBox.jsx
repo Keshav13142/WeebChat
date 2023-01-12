@@ -9,6 +9,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import { Context } from "../../Context/ContextProvider";
+import { BACKEND_URL } from "../../utils/helpers";
 const ChatBox = () => {
   const {
     chats,
@@ -45,13 +46,16 @@ const ChatBox = () => {
   const fetchMessages = async () => {
     setMessagesLoading(true);
 
-    const response = await fetch(`/api/message/${selectedChat._id}`, {
-      method: "get",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + user.token,
-      }),
-    });
+    const response = await fetch(
+      `${BACKEND_URL}/api/message/${selectedChat._id}`,
+      {
+        method: "get",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + user.token,
+        }),
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
@@ -77,14 +81,17 @@ const ChatBox = () => {
     if (e.currentTarget.name === "send" || e.key === "Enter") {
       setSendLoading(true);
 
-      const response = await fetch(`/api/message/${selectedChat._id}`, {
-        method: "post",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + user.token,
-        }),
-        body: JSON.stringify({ content: message }),
-      });
+      const response = await fetch(
+        `${BACKEND_URL}/api/message/${selectedChat._id}`,
+        {
+          method: "post",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + user.token,
+          }),
+          body: JSON.stringify({ content: message }),
+        }
+      );
 
       if (response.ok) {
         setMessage("");
