@@ -79,7 +79,7 @@ const Navbar = () => {
         }}
       >
         <Heading fontSize={[20, 22, 26]}>WeebChat</Heading>
-        <Image mt={1} boxSize="25px" src={require("../assets/logo.png")} />
+        <Image mt={1} boxSize="25px" src="logo.png" />
       </div>
       {!user ? (
         <div style={{ display: "flex", gap: "15px" }}>
