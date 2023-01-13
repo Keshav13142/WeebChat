@@ -39,6 +39,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 
   res.json(message);
 });
+
 const fetchMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const message = await Message.find({ chat: chatId }).populate(

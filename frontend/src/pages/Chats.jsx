@@ -22,6 +22,8 @@ const Chats = () => {
     chats,
     setChats,
     setChatLoading,
+    fetchAllChats,
+    setFetchAllChats,
   } = useContext(Context);
 
   const toast = useToast();
@@ -107,6 +109,13 @@ const Chats = () => {
 
     //eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    if (fetchAllChats) {
+      fetchChats();
+      setFetchAllChats(false);
+    }
+  }, [fetchAllChats]);
 
   return (
     <>

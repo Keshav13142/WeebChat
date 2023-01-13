@@ -31,6 +31,7 @@ const Navbar = () => {
     setProfileOpen,
     setProfileDetails,
     setChats,
+    setSelectedChat,
   } = useContext(Context);
 
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const Navbar = () => {
 
     setUser(null);
     setChats([]);
+    setSelectedChat(null);
     navigate("/");
 
     toast({
@@ -107,6 +109,7 @@ const Navbar = () => {
               <Kbd>Ctrl</Kbd>+<Kbd>K</Kbd>
             </Wrap>
           </Button>
+
           <Menu>
             <MenuButton
               variant="ghost"

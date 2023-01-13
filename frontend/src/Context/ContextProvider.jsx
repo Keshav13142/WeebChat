@@ -24,6 +24,10 @@ const ContextProvider = ({ children }) => {
 
   const [showAddUsers, setShowAddUsers] = useState(false);
 
+  const [notifications, setNotifications] = useState([]);
+
+  const [fetchAllChats, setFetchAllChats] = useState(false);
+
   useEffect(() => {
     let userInfo;
     if ((userInfo = JSON.parse(localStorage.getItem("user")))) {
@@ -55,6 +59,10 @@ const ContextProvider = ({ children }) => {
         setChatLoading,
         showAddUsers,
         setShowAddUsers,
+        notifications,
+        setNotifications,
+        fetchAllChats,
+        setFetchAllChats,
       }}
     >
       {children}
